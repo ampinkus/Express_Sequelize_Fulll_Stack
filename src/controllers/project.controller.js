@@ -5,8 +5,7 @@ import { Task } from "../models/Task.js";
 
 // About to test the EJS template engine
 export const home = (req, res) => {
-  
-  res.render('./projects/projects.ejs'); // renders the page about.ejs with the title "About"
+  res.render('index.ejs'); // renders the page about.ejs with the title "About"
 }
   
 

@@ -1,12 +1,12 @@
-<!-- Incluo el header de Bootstrap -->
+<!-- Incluyo el header de Bootstrap -->
 <%- include('../partials/head.ejs') %>
 <!-- Incluyo la barra de navegación -->
-<%- include('nav.ejs') %>
+<%- include('../partials/nav.ejs') %>
 
 <div class="container pt-4 pb-2">
   <div class="row ">
     <div class="col-6">
-      <h1>Usuarios</h1>
+      <h1>Proyectos</h1>
     </div>
     <div class="col-6 d-flex justify-content-end">
       <a
@@ -45,7 +45,7 @@
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
-          &nbsp Apellido &nbsp
+          &nbsp Prioridad &nbsp
           <a
             href="/?sort=last_name&order=DESC"
             type="button"
@@ -61,24 +61,9 @@
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
-          &nbsp Email &nbsp
+          &nbsp Descripción &nbsp
           <a
             href="/?sort=email&order=DESC"
-            type="button"
-            class="btn btn-outline-info"
-            ><i class="bi bi-caret-down"></i
-          ></a>
-        </th>
-        <th scope="col">
-          <a
-            href="/?sort=phone&order=ASC"
-            type="button"
-            class="btn btn-outline-info"
-            ><i class="bi bi-caret-up"></i
-          ></a>
-          &nbsp TE &nbsp
-          <a
-            href="/?sort=phone&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
@@ -91,10 +76,9 @@
     <tbody>
       <tr>
         <th scope="row" class="text-center">id</th>
-        <td class="text-center">Last Name</td>
-        <td class="text-center">First Name</td>
-        <td class="text-center">Email</td>
-        <td class="text-center">Phone</td>
+        <td class="text-center">Nombre</td>
+        <td class="text-center">Prioridad</td>
+        <td class="text-center">Descripción</td>
         <td class="text-center">
           <a href="#" type="button" class="btn btn-primary btn-small"
             ><i class="bi bi-eye"></i>&nbsp</a
