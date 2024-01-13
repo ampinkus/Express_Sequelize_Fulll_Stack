@@ -3,6 +3,12 @@
 import { Project } from '../models/project.js';
 import { Task } from "../models/Task.js";
 
+// About to test the EJS template engine
+export const about = (req, res) => {
+  res.render('about', { title: 'About' }); // renders the page about.ejs with the title "About"
+}
+  
+
 // para capturar los errores colocamos todos los métodos en un try catch
 // obtener todos los proyectos de la base de datos projects
 export const getProjects = async (req, res) => {

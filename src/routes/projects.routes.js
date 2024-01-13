@@ -1,7 +1,7 @@
 // tengo que importar e instanciar la función router
 import { Router } from 'express';
 // tengo que importar los controladores de las rutas desde project.controller.js
-import { getProjects, createProject, updateProject, deleteProject, getProject, getProjectTasks } from '../controllers/project.controller.js';
+import { getProjects, createProject, updateProject, deleteProject, getProject, getProjectTasks, about } from '../controllers/project.controller.js';
 
 //Creo una instancia de la clase Router
 const router = Router();
@@ -20,6 +20,9 @@ router.get('/projects/:id',getProject)
 
 //obtener todas las tareas que pertenecen a un proyecto
 router.get("/projects/:id/tasks", getProjectTasks);
+
+// probar EJS
+router.get("/about", about);
 
 // tengo que exportar las rutas
 export default router;
