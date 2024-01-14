@@ -2,22 +2,30 @@
 // tengo que traer los modelos de la base de datos para poder guardar los datos
 import { Project } from '../models/project.js';
 import { Task } from "../models/Task.js";
+import path from "path";
+// importo __filename y __dirname de utils para obtener la ruta del archivo actual
+import { __filename, __dirname } from './utils.js';
+
+// const __filename = fileURLToPath(import.meta.url);
+// console.log(__filename); // la ruta completa del archivo utils 
+// const __dirname = path.dirname(__filename);
+// console.log(__dirname);  // el directorio donde está el archivo utils
+
 
 // About to test the EJS template engine
 export const home = (req, res) => {
-  res.render('index.ejs'); // renders the page about.ejs with the title "About"
+  res.render('index.ejs'); // renders the page index.ejs
 }
   
 
 // para capturar los errores colocamos todos los métodos en un try catch
 // obtener todos los proyectos de la base de datos projects
+
 export const getProjects = async (req, res) => {
   try {
-    //test de un error
-    // throw new Error('test error');
     const projects = await Project.findAll(); // buscar todos los proyectos
-    res.json(projects);
-  }catch (error) {
+    res.render(path.join(__dirname, '../views/projects/projects.ejs'), { projects });
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };

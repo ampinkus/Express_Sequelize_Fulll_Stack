@@ -18,6 +18,9 @@ const app = express();
 app.use(express.json());  
 // log de las peticiones
 app.use(morgan("dev"));
+// Add this middleware to serve static files (styles.css, images....)
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 
 // quiero que app use las rutas
 app.use(projectRoutes);

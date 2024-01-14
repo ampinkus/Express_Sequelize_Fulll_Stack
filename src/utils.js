@@ -1,4 +1,4 @@
-// we use this file to get the path of the current file and avoid to clutter the code in the app.js
+// we use this file to get the path of the current directory and avoid to clutter the code in the app.js
 /*
 1. Importing Modules:
 import path from "path";

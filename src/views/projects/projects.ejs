@@ -74,23 +74,25 @@
     </thead>
 
     <tbody>
-      <tr>
-        <th scope="row" class="text-center">id</th>
-        <td class="text-center">Nombre</td>
-        <td class="text-center">Prioridad</td>
-        <td class="text-center">Descripción</td>
-        <td class="text-center">
-          <a href="#" type="button" class="btn btn-primary btn-small"
-            ><i class="bi bi-eye"></i>&nbsp</a
-          >
-          <a href="#" type="button" class="btn btn-success btn-small"
-            ><i class="bi bi-pencil"></i>&nbsp</a
-          >
-          <a href="#" type="button" class="btn btn-warning btn-small"
-            ><i class="bi bi-person-x"></i>&nbsp</a
-          >
-        </td>
-      </tr>
+      <% projects.forEach(project => { %>
+        <tr>
+          <th scope="row" class="text-center"><%= project.id %></th>
+          <td class="text-center"><%= project.name %></td>
+          <td class="text-center"><%= project.priority %></td>
+          <td class="text-center"><%= project.description %></td>
+          <td class="text-center">
+            <a href="#" type="button" class="btn btn-primary btn-small"
+              ><i class="bi bi-eye"></i>&nbsp</a
+            >
+            <a href="#" type="button" class="btn btn-success btn-small"
+              ><i class="bi bi-pencil"></i>&nbsp</a
+            >
+            <a href="#" type="button" class="btn btn-warning btn-small"
+              ><i class="bi bi-person-x"></i>&nbsp</a
+            >
+          </td>
+        </tr>
+      <% }); %>
     </tbody>
   </table>
 </div>
