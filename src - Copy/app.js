@@ -2,13 +2,17 @@
 // importo express
 import express from 'express';
 import morgan from "morgan";
+import { dirname } from 'path';  // Import the 'dirname' function
 import path from 'path';  // Import the 'path' module
-// importo __filename y __dirname de utils para obtener la ruta del archivo actual
-import { __filename, __dirname } from './utils.js';
+import { fileURLToPath } from 'url';  // Import the 'fileURLToPath' function
 
 // importo las rutas de project y task. Tengo que usar el .js porque son archivos
 import projectRoutes from './routes/projects.routes.js';
 import taskRoutes from './routes/tasks.routes.js';
+
+// define the filename and dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 //creo una app con express
 const app = express();

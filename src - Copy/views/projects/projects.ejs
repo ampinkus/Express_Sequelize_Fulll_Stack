@@ -1,0 +1,98 @@
+<!-- Incluyo el header de Bootstrap -->
+<%- include('../partials/head.ejs') %>
+<!-- Incluyo la barra de navegación -->
+<%- include('../partials/nav.ejs') %>
+
+<div class="container pt-4 pb-2">
+  <div class="row ">
+    <div class="col-6">
+      <h1>Proyectos</h1>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <a
+        href="/adduser"
+        type="button"
+        class="btn btn-primary align-self-center"
+      >
+        +Agregar</a
+      >
+    </div>
+  </div>
+
+  <table class="table table-dark table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr class="text-center">
+        <th scope="col">id</th>
+        <th scope="col">
+          <a
+            href="/?sort=first_name&order=ASC"
+            type="button"
+            class="btn btn-outline-info"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Nombre &nbsp
+          <a
+            href="/?sort=first_name&order=DESC"
+            type="button"
+            class="btn btn-outline-info"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <th scope="col">
+          <a
+            href="/?sort=last_name&order=ASC"
+            type="button"
+            class="btn btn-outline-info"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Prioridad &nbsp
+          <a
+            href="/?sort=last_name&order=DESC"
+            type="button"
+            class="btn btn-outline-info"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <!-- Repeat similar code for other columns -->
+        <th scope="col">
+          <a
+            href="/?sort=email&order=ASC"
+            type="button"
+            class="btn btn-outline-info"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Descripción &nbsp
+          <a
+            href="/?sort=email&order=DESC"
+            type="button"
+            class="btn btn-outline-info"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <th scope="col" style="width: 200px">Acción</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <th scope="row" class="text-center">id</th>
+        <td class="text-center">Nombre</td>
+        <td class="text-center">Prioridad</td>
+        <td class="text-center">Descripción</td>
+        <td class="text-center">
+          <a href="#" type="button" class="btn btn-primary btn-small"
+            ><i class="bi bi-eye"></i>&nbsp</a
+          >
+          <a href="#" type="button" class="btn btn-success btn-small"
+            ><i class="bi bi-pencil"></i>&nbsp</a
+          >
+          <a href="#" type="button" class="btn btn-warning btn-small"
+            ><i class="bi bi-person-x"></i>&nbsp</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Incluyo el footer de Bootstrap -->
+<%- include('../partials/foot.ejs') %>
