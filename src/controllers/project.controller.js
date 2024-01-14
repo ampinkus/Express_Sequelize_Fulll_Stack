@@ -5,12 +5,7 @@ import { Task } from "../models/Task.js";
 import path from "path";
 // importo __filename y __dirname de utils para obtener la ruta del archivo actual
 import { __filename, __dirname } from './utils.js';
-
-// const __filename = fileURLToPath(import.meta.url);
-// console.log(__filename); // la ruta completa del archivo utils 
-// const __dirname = path.dirname(__filename);
-// console.log(__dirname);  // el directorio donde está el archivo utils
-
+import { where } from 'sequelize';
 
 // About to test the EJS template engine
 export const home = (req, res) => {
@@ -20,15 +15,32 @@ export const home = (req, res) => {
 
 // para capturar los errores colocamos todos los métodos en un try catch
 // obtener todos los proyectos de la base de datos projects
-
 export const getProjects = async (req, res) => {
   try {
-    const projects = await Project.findAll(); // buscar todos los proyectos
+    const { sort, order } = req.query;
+    let orderCriteria = [['name', 'ASC']]; // Default sorting criteria
+
+    // Check if sort and order parameters are provided
+    if (sort && order) {
+      // Validate that the provided sort column is one of the allowed columns
+      const allowedColumns = ['name', 'priority', 'description'];
+      if (allowedColumns.includes(sort)) {
+        orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
+      } else {
+        // Handle invalid sort column
+        return res.status(400).send('Invalid sort column');
+      }
+    }
+
+    const projects = await Project.findAll({
+      order: orderCriteria, // Use the custom sorting criteria
+    });
     res.render(path.join(__dirname, '../views/projects/projects.ejs'), { projects });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // crear un proyecto nuevo en la bas de datos de projects
 export const createProject = async (req, res) => {
