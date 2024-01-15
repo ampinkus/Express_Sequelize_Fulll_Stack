@@ -9,25 +9,29 @@ import { Task } from "./Task.js";
 // creo la tabla projects, se define como un objeto, y la exporto como Project
 // para poder usarla en otros módulos
 export const Project = sequelize.define('projects', { 
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-      },
-      priority: {
-        type: DataTypes.INTEGER,
-      },
-      description: {
-        type: DataTypes.STRING,
-      },
-    },
-    {
-      timestamps: true,
-  }
-)  
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  priority: {
+    type: DataTypes.INTEGER,
+  },
+  description: {
+    type: DataTypes.STRING,
+  },
+  active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
+},
+{
+  timestamps: true,
+});
+
 
 // tengo que establecer la relación entre ambas tablas, cada project tiene muchos tasks.
 // el crear un foreign key en la tabla Task, crea un campo en la tabla Tasks que se llama projectId

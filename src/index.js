@@ -4,7 +4,7 @@ import app from "./app.js";
 import {sequelize} from "./database/database.js";
 
 // define the port number from the environment variables or use port 4000
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 // creo una función main que sea asíncrona.
 async function main() { 
@@ -13,7 +13,7 @@ async function main() {
     await sequelize.sync({alter:true});// apply the changes to the table without dropping the old one
     // await sequelize.sync({force:false});// During development to avoid to modify the tables
     app.listen(port);
-    console.log("Server is running on port 4000");   
+    console.log(`Server is running on port ${port}`);   
     }catch(error) {
         console.error('Unable to connect to the database:',error);  
     }

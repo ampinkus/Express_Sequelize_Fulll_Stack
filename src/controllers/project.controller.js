@@ -5,7 +5,6 @@ import { Task } from "../models/Task.js";
 import path from "path";
 // importo __filename y __dirname de utils para obtener la ruta del archivo actual
 import { __filename, __dirname } from './utils.js';
-import { where } from 'sequelize';
 
 // About to test the EJS template engine
 export const home = (req, res) => {
@@ -17,7 +16,7 @@ export const home = (req, res) => {
 // obtener todos los proyectos de la base de datos projects
 export const getProjects = async (req, res) => {
   try {
-    const { sort, order } = req.query;
+    const { sort, order, activo} = req.query; // get the status from the call of the API
     let orderCriteria = [['name', 'ASC']]; // Default sorting criteria
 
     // Check if sort and order parameters are provided
@@ -33,6 +32,9 @@ export const getProjects = async (req, res) => {
     }
 
     const projects = await Project.findAll({
+      where: {
+        active: activo, // Filter by active status
+      },
       order: orderCriteria, // Use the custom sorting criteria
     });
     res.render(path.join(__dirname, '../views/projects/projects.ejs'), { projects });
