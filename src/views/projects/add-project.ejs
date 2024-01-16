@@ -1,0 +1,74 @@
+<!-- Breadcrumbs -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/projects">Projects</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Nuevo Proyecto</li>
+  </ol>
+</nav>
+
+<!-- input form.  Note that the action is a POST request   -->
+<form
+  class="row g-3 needs-validation"
+  method="POST"
+  action="/projects"
+  novalidate
+>
+  <div class="col-6">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control"
+        id="floatingInput"
+        value="<%= project.name %>"
+        placeholder="Nombre"
+        name="name"
+      />
+      <label for="floatingInput">Nombre</label>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-floating mb-3">
+      <input
+        type="number"
+        class="form-control"
+        id="floatingInput"
+        value="<%= project.priority %>"
+        placeholder="Prioridad"
+        name="priority"
+      />
+      <label for="floatingInput">Prioridad</label>
+    </div>
+  </div>
+  <!-- Use a new line -->
+  <div class="col-6">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        class="form-control"
+        id="floatingInput"
+        value="<%= project.description %>"
+        placeholder="Descripción"
+        name="description"
+      />
+      <label for="floatingInput">Descripcion</label>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-floating mb-3">
+      <input
+        type="number"
+        class="form-control"
+        id="floatingInput"
+        value="<%= project.active %>"
+        placeholder="Activo (Si: 1, No: 0)"
+        name="active"
+      />
+      <label for="floatingInput">Activo</label>
+    </div>
+  </div>
+ 
+
+  <div class="col-12 d-grid">
+    <button class="btn btn-primary" type="submit">Agregar</button>
+  </div>
+</form>

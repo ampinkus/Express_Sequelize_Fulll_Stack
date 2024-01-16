@@ -1,21 +1,20 @@
 <!-- Incluyo el header de Bootstrap -->
 <%- include('../partials/head.ejs') %>
 <!-- Incluyo la barra de navegación -->
-<%- include('../partials/nav.ejs') %>
+<%- include('../partials/inactiveNav.ejs') %>
 
 <div class="container pt-4 pb-2">
   <div class="row ">
-    <div class="col-6">
-      <h1>Proyectos</h1>
+    <div class="col-8">
+      <h1><%= titulo  %></h1>
     </div>
-    <div class="col-6 d-flex justify-content-end">
+    <div class="col-4 d-flex justify-content-around">
       <a
-        href="/adduser"
-        type="button"
-        class="btn btn-primary align-self-center"
-      >
-        +Agregar</a
-      >
+      href="/activeProjects" 
+      type="button"
+      class="btn btn-primary align-self-center mr-3">
+      <i class="bi bi-arrow-90deg-up"></i> &nbsp Activos</a>
+
     </div>
   </div>
 
@@ -25,14 +24,14 @@
         <th scope="col">id</th>
         <th scope="col">
           <a
-            href="/?sort=first_name&order=ASC"
+            href="/inactiveProjects/?sort=name&order=ASC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Nombre &nbsp
           <a
-            href="/?sort=first_name&order=DESC"
+            href="/inactiveProjects/?sort=name&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
@@ -40,14 +39,14 @@
         </th>
         <th scope="col">
           <a
-            href="/?sort=last_name&order=ASC"
+            href="/inactiveProjects/?sort=priority&order=ASC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Prioridad &nbsp
           <a
-            href="/?sort=last_name&order=DESC"
+            href="/inactiveProjects/?sort=priority&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
@@ -56,14 +55,14 @@
         <!-- Repeat similar code for other columns -->
         <th scope="col">
           <a
-            href="/?sort=email&order=ASC"
+            href="/inactiveProjects/?sort=description&order=ASC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Descripción &nbsp
           <a
-            href="/?sort=email&order=DESC"
+            href="/inactiveProjects/?sort=description&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
@@ -74,23 +73,19 @@
     </thead>
 
     <tbody>
-      <tr>
-        <th scope="row" class="text-center">id</th>
-        <td class="text-center">Nombre</td>
-        <td class="text-center">Prioridad</td>
-        <td class="text-center">Descripción</td>
-        <td class="text-center">
-          <a href="#" type="button" class="btn btn-primary btn-small"
-            ><i class="bi bi-eye"></i>&nbsp</a
-          >
-          <a href="#" type="button" class="btn btn-success btn-small"
-            ><i class="bi bi-pencil"></i>&nbsp</a
-          >
-          <a href="#" type="button" class="btn btn-warning btn-small"
-            ><i class="bi bi-person-x"></i>&nbsp</a
-          >
-        </td>
-      </tr>
+      <% projects.forEach(project => { %>
+        <tr>
+          <th scope="row" class="text-center"><%= project.id %></th>
+          <td class="text-center"><%= project.name %></td>
+          <td class="text-center"><%= project.priority %></td>
+          <td class="text-center"><%= project.description %></td>
+          <td class="text-center">
+            <a href="#" type="button" class="btn btn-primary btn-small"
+              ><i class="bi bi-arrow-90deg-up"></i>&nbsp Activar</a
+            >
+          </td>
+        </tr>
+      <% }); %>
     </tbody>
   </table>
 </div>

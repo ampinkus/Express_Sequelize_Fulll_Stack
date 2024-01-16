@@ -20,6 +20,8 @@ app.use(express.json());
 app.use(morgan("dev"));
 // Add this middleware to serve static files (styles.css, images....)
 app.use('/public', express.static(path.join(__dirname, 'public')));
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded({ extended: true }));
 
 
 // quiero que app use las rutas

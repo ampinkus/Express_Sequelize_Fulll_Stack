@@ -1,31 +1,25 @@
 <!-- Incluyo el header de Bootstrap -->
 <%- include('../partials/head.ejs') %>
 <!-- Incluyo la barra de navegación -->
-<%- include('../partials/nav.ejs') %>
+<%- include('../partials/activeNav.ejs') %>
 
 <div class="container pt-4 pb-2">
   <div class="row ">
-    <div class="col-9">
-      <h1>Proyectos</h1>
+    <div class="col-8">
+      <h1><%= titulo  %></h1>
     </div>
-    <div class="col-3 d-flex justify-content-around">
+    <div class="col-4 d-flex justify-content-around">
       <a
-      href="/projects/?activo=1" 
+      href="/inactiveProjects/"
       type="button"
       class="btn btn-primary align-self-center mr-3">
-      Activos</a>
+      <i class="bi bi-arrow-90deg-down"></i> &nbsp Inactivos</a>
 
       <a
-      href="/projects/?activo=0"
-      type="button"
-      class="btn btn-primary align-self-center mr-3">
-      Inactivos</a>
-
-      <a
-        href="/adduser"
+        href="#"
         type="button"
         class="btn btn-primary align-self-center">
-        +Agregar</a>
+        <i class="bi bi-list-task"></i> &nbsp Agregar</a>
     </div>
   </div>
 
@@ -35,14 +29,14 @@
         <th scope="col">id</th>
         <th scope="col">
           <a
-            href="/projects/?sort=name&order=ASC"
+            href="/activeProjects/?sort=name&order=ASC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Nombre &nbsp
           <a
-            href="/projects/?sort=name&order=DESC"
+            href="/activeProjects/?sort=name&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
@@ -50,14 +44,14 @@
         </th>
         <th scope="col">
           <a
-            href="/projects/?sort=priority&order=ASC"
+            href="/activeProjects/?sort=priority&order=ASC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Prioridad &nbsp
           <a
-            href="/projects/?sort=priority&order=DESC"
+            href="/activeProjects/?sort=priority&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
@@ -66,14 +60,14 @@
         <!-- Repeat similar code for other columns -->
         <th scope="col">
           <a
-            href="/projects/?sort=description&order=ASC"
+            href="/activeProjects/?sort=description&order=ASC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Descripción &nbsp
           <a
-            href="/projects/?sort=description&order=DESC"
+            href="/activeProjects/?sort=description&order=DESC"
             type="button"
             class="btn btn-outline-info"
             ><i class="bi bi-caret-down"></i
