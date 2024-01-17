@@ -211,8 +211,8 @@ export const modifyProject = async (req, res) => {
 // actualizo el proyecto en base a los datos del formulario modifyProject.ejs 
 export const updateProject = async (req, res) => {
   try {
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
-    let titulo = "Proyectos Activos";
+    // let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    // let titulo = "Proyectos Activos";
       // Use Sequelize to find a user by ID
    const project = await Project.findOne({
     where: {
@@ -233,10 +233,9 @@ export const updateProject = async (req, res) => {
       description,
       comment,
     });
-    // mostrar la versión actualizada del proyecto modificado
-    res.render(path.join(__dirname, "../views/projects/modifyProject.ejs"), {
-      project,
-      titulo,
+    // mostrar la versión actualizada del proyecto modificado en la tabla de proyectos activos
+    await getActiveProjects(req, res);
+    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
     });
     
   } catch (error) {
@@ -254,6 +253,7 @@ export const inactivateProject = async (req, res) => {
     
     // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
     await Project.update({ active: 0 }, { where: { id } });
+    // llamo a la vista projects/activeProjects.ejs con las dos lineas de código siguientes:
     await getActiveProjects(req, res);
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
     });
@@ -270,6 +270,7 @@ export const activateProject = async (req, res) => {
     
     // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
     await Project.update({ active: 1 }, { where: { id } });
+    // llamo a la vista projects/inactiveProjects.ejs con las dos lineas de código siguientes:
     await getInactiveProjects(req, res);
     res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
     });

@@ -1,8 +1,10 @@
 
     <!--  La plantilla de la barra de navegación para proyectos activos -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> -->
+    <nav class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">  
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Gerenciamiento Projectos</a>
+          <!-- <a class="navbar-brand" href="#">Proyectos</a> -->
+          <h2>Proyectos &nbsp</h2>
           <button
             class="navbar-toggler"
             type="button"
@@ -17,7 +19,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/activeProjects">Projectos Activos</a>
+                <a class="nav-link" aria-current="page" href="/activeProjects">Proyectos Activos &nbsp</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/inactiveProjects">Proyectos Inactivos</a>
               </li>
             </ul>
   
@@ -35,7 +40,7 @@
                 name="search"
                 aria-label="Search"
               />
-              <button class="btn btn-outline-light" type="submit">Buscar</button>
+              <button class="btn btn btn-dark" type="submit">Buscar</button>
             </form>
           </div>
         </div>
