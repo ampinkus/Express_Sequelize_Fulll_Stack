@@ -7,16 +7,12 @@ import { Op } from "sequelize";
 // importo __filename y __dirname de utils para obtener la ruta del archivo actual
 import { __filename, __dirname } from "./utils.js";
 
-// About to test the EJS template engine
-export const home = (req, res) => {
-  res.render("index.ejs"); // renders the page index.ejs
-};
 
 // para capturar los errores colocamos todos los métodos en un try catch
 // obtener todos los proyectos activos de la base de datos projects
 export const getActiveProjects = async (req, res) => {
   try {
-    const { sort, order, activo } = req.query; // get the status from the call of the API
+    const { sort, order } = req.query; // get the status from the call of the API
     let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
     let titulo = "Proyectos Activos";
 
@@ -50,7 +46,7 @@ export const getActiveProjects = async (req, res) => {
 // obtener todos los proyectos inactivos de la base de datos projects
 export const getInactiveProjects = async (req, res) => {
   try {
-    const { sort, order, activo } = req.query; // get the status from the call of the API
+    const { sort, order} = req.query; // get the status from the call of the API
     let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
     let titulo = "Proyectos Inactivos";
 
@@ -258,13 +254,13 @@ export const inactivateProject = async (req, res) => {
     
     // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
     await Project.update({ active: 0 }, { where: { id } });
-    
-    res.sendStatus(204); // Respond with success status
+    await getActiveProjects(req, res);
+    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Pasar de inactivo a activo un proyecto de la base de datos projects
 export const activateProject = async (req, res) => {
@@ -274,8 +270,10 @@ export const activateProject = async (req, res) => {
     
     // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
     await Project.update({ active: 1 }, { where: { id } });
+    await getInactiveProjects(req, res);
+    res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
+    });
     
-    res.sendStatus(204); // Respond with success status
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
