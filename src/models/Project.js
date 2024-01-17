@@ -23,6 +23,9 @@ export const Project = sequelize.define('projects', {
   description: {
     type: DataTypes.STRING,
   },
+  comment: {
+    type: DataTypes.TEXT,
+  },
   active: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,

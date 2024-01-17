@@ -143,9 +143,9 @@ export const findInactiveUser = async (req, res) => {
   }
 };
 
-// Render the addProject.ejs file
-export const addProject = async(req, res) => {
-  res.render(path.join(__dirname, "../views/projects/addProject.ejs")); 
+//Agregar un proyecto
+export const addProject = async (req, res) => {
+  res.render(path.join(__dirname, "../views/projects/addProject.ejs"));
 };
 
 // crear un proyecto nuevo en la base de datos de projects
@@ -156,11 +156,18 @@ export const createProject = async (req, res) => {
     // se obtienen los datos del body
     // console.log(req.body);
     // quiero extraer los datos del body, uso un deconstruct
-    const { name, priority, description } = req.body;
+    const { name, priority, description, comment } = req.body;
     // guardo los datos enviados en la base, newProject representa la fila que se ha guardado
     // en la tabla projects. The Sequelize command await Project.create() is used to create a
     // new instance of the Project model and insert a new record into the corresponding table in the database.
-    const newProject = await Project.create({ name, priority, description});
+    // The await keyword is used to wait for the asynchronous operation to complete before moving on to the next line of code.
+    const newProject = await Project.create({
+      name,
+      priority,
+      description,
+      comment,
+    });
+    // renderizo la vista projects/activeProjects.ejs
     const projects = await Project.findAll({
       where: {
         active: 1, // Filter by active status
@@ -170,7 +177,7 @@ export const createProject = async (req, res) => {
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
       projects,
       titulo,
-    })
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -206,8 +213,10 @@ export const deleteProject = async (req, res) => {
 };
 
 // obtener un proyecto de la base de datos projects
-export const getProject = async (req, res) => {
+export const viewProject = async (req, res) => {
   try {
+    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    let titulo = "Proyecto buscado";
     // traigo el id desde req.params
     const { id } = req.params;
     // busco el proyecto con el id
@@ -216,7 +225,10 @@ export const getProject = async (req, res) => {
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
-    res.send(project);
+    res.render(path.join(__dirname, "../views/projects/viewProject.ejs"), {
+      project,
+      titulo,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
