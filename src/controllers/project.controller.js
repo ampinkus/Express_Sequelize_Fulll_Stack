@@ -183,20 +183,70 @@ export const createProject = async (req, res) => {
   }
 };
 
-// modificar un proyecto de la base de datos projects
+// modificar un proyecto de la base de datos projects, presento en el formulario modifyProject.ejs el proyecto que se quiere modificar
+export const modifyProject = async (req, res) => {
+  try {
+    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    let titulo = "Proyectos Activos"
+    // Use Sequelize to find a user by ID
+   const project = await Project.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+    if (project) {
+      // If the user is found, render the 'modifyProject' view
+      res.render(path.join(__dirname, "../views/projects/modifyProject.ejs"), {
+        project,
+        titulo,
+      });
+    } else {
+      // Handle the case where the user with the specified ID is not found
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    // Handle any errors that occur during the database query
+    console.error('Error retrieving project:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// actualizo el proyecto en base a los datos del formulario modifyProject.ejs 
 export const updateProject = async (req, res) => {
   try {
-    // se obtiene el id del proyecto que se quiere eliminar
-    const { id } = req.params;
-    // se obtienen los datos del body
-    const { name, priority, description } = req.body;
-    // se busca el proyecto con el id para mostrar el proyecto modificado
-    const project = await Project.findByPk(id); // find by primary key
-    // se actualiza el proyecto con los datos del body, si un dato falta el mismo no se borra.
-    await Project.update({ name, priority, description }, { where: { id } });
-    res.json(project);
+    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    let titulo = "Proyectos Activos";
+      // Use Sequelize to find a user by ID
+   const project = await Project.findOne({
+    where: {
+      id: req.params.id,
+    },
+  });
+    const { name, priority, description, comment } = req.body;
+
+    // Check if the user exists
+    if (!project) {
+      return res.status(404).send('User not found');
+    }
+
+    // Update the user
+    await project.update({
+      name,
+      priority,
+      description,
+      comment,
+    });
+    // mostrar la versión actualizada del proyecto modificado
+    res.render(path.join(__dirname, "../views/projects/modifyProject.ejs"), {
+      project,
+      titulo,
+    });
+    
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // Handle any errors that occur during the update
+    console.error('Error updating user:', error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
