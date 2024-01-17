@@ -250,23 +250,40 @@ export const updateProject = async (req, res) => {
   }
 };
 
-// eliminar un proyecto de la base de datos projects
-export const deleteProject = async (req, res) => {
+// Pasar de activo a inactivo un proyecto de la base de datos projects
+export const inactivateProject = async (req, res) => {
   try {
-    // se obtiene el id del proyecto que se quiere eliminar
-    const { id } = req.params; // we get the id from the URL: http://localhost:4000/projects/2
-    await Project.destroy({ where: { id } });
-    res.sendStatus(204); // solo digo que todo salio bien
+    // se obtiene el id del proyecto que se quiere desactivar
+    const { id } = req.params;
+    
+    // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
+    await Project.update({ active: 0 }, { where: { id } });
+    
+    res.sendStatus(204); // Respond with success status
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// obtener un proyecto de la base de datos projects
+
+// Pasar de inactivo a activo un proyecto de la base de datos projects
+export const activateProject = async (req, res) => {
+  try {
+    // se obtiene el id del proyecto que se quiere activar
+    const { id } = req.params;
+    
+    // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
+    await Project.update({ active: 1 }, { where: { id } });
+    
+    res.sendStatus(204); // Respond with success status
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Ver un proyecto de la base de datos projects
 export const viewProject = async (req, res) => {
   try {
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
-    let titulo = "Proyecto buscado";
     // traigo el id desde req.params
     const { id } = req.params;
     // busco el proyecto con el id
@@ -277,7 +294,6 @@ export const viewProject = async (req, res) => {
     }
     res.render(path.join(__dirname, "../views/projects/viewProject.ejs"), {
       project,
-      titulo,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

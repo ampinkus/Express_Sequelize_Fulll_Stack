@@ -10,10 +10,14 @@
 
 <!-- input form.  Note that the action is a POST request   -->
 <div class="container pt-4 pb-2">
+  <div class="row mb-3">
+    <div class="col text-center">
+      <h3> Modificación del proyecto: <%= project.name %></h3>
+    </div>
+  </div>
   <form
     class="row g-3 needs-validation"
     method="POST"
-    
     action="/updateProject/<%= project.id %>"
     novalidate
   >

@@ -4,22 +4,26 @@
 <%- include('../partials/activeNav.ejs') %>
 
 <div class="container pt-4 pb-2">
-  <div class="row ">
+  <div class="row">
     <div class="col-8">
-      <h1><%= titulo  %></h1>
+      <h1><%= titulo %></h1>
     </div>
     <div class="col-4 d-flex justify-content-around">
       <a
-      href="/inactiveProjects"
-      type="button"
-      class="btn btn-primary align-self-center mr-3">
-      <i class="bi bi-arrow-90deg-down"></i> &nbsp Inactivos</a>
+        href="/inactiveProjects"
+        type="button"
+        class="btn btn-primary align-self-center mr-3"
+      >
+        <i class="bi bi-arrow-90deg-down"></i> &nbsp Inactivos</a
+      >
 
       <a
         href="/addProject"
         type="button"
-        class="btn btn-primary align-self-center">
-        <i class="bi bi-list-task"></i> &nbsp Agregar</a>
+        class="btn btn-primary align-self-center"
+      >
+        <i class="bi bi-list-task"></i> &nbsp Agregar</a
+      >
     </div>
   </div>
 
@@ -79,23 +83,36 @@
 
     <tbody>
       <% projects.forEach(project => { %>
-        <tr>
-          <th scope="row" class="text-center"><%= project.id %></th>
-          <td class="text-center"><%= project.name %></td>
-          <td class="text-center"><%= project.priority %></td>
-          <td class="text-center"><%= project.description %></td>
-          <td class="text-center">
-            <a href="/viewProject/<%= project.id %>" type="button" class="btn btn-primary btn-small"
-              ><i class="bi bi-eye"></i>&nbsp</a
-            >
-            <a href="/modifyProject/<%= project.id %>" type="button" class="btn btn-success btn-small"
-              ><i class="bi bi-pencil"></i>&nbsp</a
-            >
-            <a href="#" type="button" class="btn btn-warning btn-small"
-              ><i class="bi bi-person-x"></i>&nbsp</a
-            >
-          </td>
-        </tr>
+      <tr>
+        <th scope="row" class="text-center"><%= project.id %></th>
+        <td class="text-center"><%= project.name %></td>
+        <td class="text-center"><%= project.priority %></td>
+        <td class="text-center"><%= project.description %></td>
+        <td class="text-center">
+          <a
+            href="/viewProject/<%= project.id %>"
+            type="button"
+            class="btn btn-primary btn-small"
+            ><i class="bi bi-eye"></i>&nbsp</a
+          >
+          <a
+            href="/modifyProject/<%= project.id %>"
+            type="button"
+            class="btn btn-success btn-small"
+            ><i class="bi bi-pencil"></i>&nbsp</a
+          >
+          <form
+            action="/inactivateProject/<%= project.id %>"
+            method="POST"
+            onsubmit="return confirm('Está seguro de desactivar el proyecto ?');"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-warning btn-small">
+              <i class="bi bi-person-x"></i>&nbsp 
+            </button>
+          </form>
+        </td>
+      </tr>
       <% }); %>
     </tbody>
   </table>

@@ -80,9 +80,16 @@
           <td class="text-center"><%= project.priority %></td>
           <td class="text-center"><%= project.description %></td>
           <td class="text-center">
-            <a href="#" type="button" class="btn btn-primary btn-small"
-              ><i class="bi bi-arrow-90deg-up"></i>&nbsp Activar</a
-            >
+            <form
+            action="/activateProject/<%= project.id %>"
+            method="POST"
+            onsubmit="return confirm('Está seguro de activar el proyecto ?');"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-warning btn-small">
+              <i class="bi bi-person-x"></i>&nbsp Activar
+            </button>
+          </form>
           </td>
         </tr>
       <% }); %>
