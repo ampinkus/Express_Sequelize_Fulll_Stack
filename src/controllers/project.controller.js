@@ -7,10 +7,8 @@ import { Op } from "sequelize";
 // importo __filename y __dirname de utils para obtener la ruta del archivo actual
 import { __filename, __dirname } from "./utils.js";
 
-
 // para capturar los errores colocamos todos los métodos en un try catch
 // obtener todos los proyectos activos de la base de datos projects
-
 
 export const getActiveProjects = async (req, res) => {
   try {
@@ -79,7 +77,7 @@ export const getInactiveProjects = async (req, res) => {
   }
 };
 
-// Find User by Search in active users
+// Find User by Search in active projects
 export const findActiveProject = async (req, res) => {
   try {
     // Get the search term
@@ -98,7 +96,7 @@ export const findActiveProject = async (req, res) => {
       },
     });
 
-    // Render the 'activeProjects' template with the retrieved users
+    // Render the 'activeProjects' template with the retrieved projects
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
       projects,
       titulo,
@@ -110,7 +108,7 @@ export const findActiveProject = async (req, res) => {
   }
 };
 
-// Find User by Search in inactive users
+// Find project by Search in inactive project 
 export const findInactiveProject = async (req, res) => {
   try {
     // Get the search term
@@ -129,7 +127,7 @@ export const findInactiveProject = async (req, res) => {
       },
     });
 
-    // Render the 'inactiveProjects' template with the retrieved users
+    // Render the 'inactiveProjects' template with the retrieved projects
     res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
       projects,
       titulo,
@@ -141,7 +139,7 @@ export const findInactiveProject = async (req, res) => {
   }
 };
 
-//Agregar un proyecto
+//Agregar un proyecto mostrando la forma addProject
 export const addProject = async (req, res) => {
   res.render(path.join(__dirname, "../views/projects/addProject.ejs"));
 };
@@ -184,7 +182,6 @@ export const createProject = async (req, res) => {
 // modificar un proyecto de la base de datos projects, presento en el formulario modifyProject.ejs el proyecto que se quiere modificar
 export const modifyProject = async (req, res) => {
   try {
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
     let titulo = "Proyectos Activos"
     // Use Sequelize to find a user by ID
    const project = await Project.findOne({

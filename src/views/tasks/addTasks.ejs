@@ -1,0 +1,74 @@
+<!-- Incluyo el header de Bootstrap -->
+<%- include('../partials/head.ejs') %>
+<!-- Incluyo la barra de navegación -->
+<%- include('../partials/activeNav.ejs') %>
+
+<!-- input form.  Note that the action is a POST request   -->
+<div class="container pt-4 pb-2">
+  <form
+    class="row g-3 needs-validation"
+    method="POST"
+    action="/createProject"
+    novalidate
+  >
+    <div class="col-4">
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          value=""
+          placeholder="Nombre"
+          name="name"
+        />
+        <label for="floatingInput">Nombre</label>
+      </div>
+    </div>
+    <div class="col-1">
+      <div class="form-floating mb-3">
+        <input
+          type="number"
+          class="form-control"
+          id="floatingInput"
+          value=""
+          placeholder="Prioridad"
+          name="priority"
+        />
+        <label for="floatingInput">Prioridad</label>
+      </div>
+    </div>
+    <div class="col-7">
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          value=""
+          placeholder="Descripción"
+          name="description"
+        />
+        <label for="floatingInput">Descripción</label>
+      </div>
+    </div>
+    <!-- Use a new line -->
+    <div class="col-12">
+      <div class="form-floating mb-3">
+        <textarea
+          class="form-control"
+          id="comments"
+          value=""
+          placeholder="Comentario"
+          name="comment"
+          style="height: 200px"
+        ></textarea>
+        <label for="floatingInput">Comentario</label>
+      </div>
+    </div>
+
+    <div class="col-12 d-grid">
+      <button class="btn btn-primary" type="submit">Agregar</button>
+    </div>
+  </form>
+</div>
+<!-- Incluyo el footer de Bootstrap -->
+<%- include('../partials/foot.ejs') %>

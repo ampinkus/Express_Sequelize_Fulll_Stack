@@ -21,7 +21,13 @@ export const Task = sequelize.define(
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-      
+      description: {
+        type: DataTypes.STRING,
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
     },
     {
       timestamps: false,

@@ -19,7 +19,7 @@ export const getActiveTasks = async (req, res) => {
     // Check if sort and order parameters are provided
     if (sort && order) {
       // Validate that the provided sort column is one of the allowed columns
-      const allowedColumns = ["name", "priority", "description"];
+      const allowedColumns = ["name", "done", "projectId"];
       if (allowedColumns.includes(sort)) {
         orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
       } else {
@@ -28,14 +28,14 @@ export const getActiveTasks = async (req, res) => {
       }
     }
 
-    const projects = await Project.findAll({
+    const tasks = await Task.findAll({
       where: {
         active: 1, // Filter by active status
       },
       order: orderCriteria, // Use the custom sorting criteria
     });
-    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
-      projects,
+    res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
+      tasks,
       titulo,
     });
   } catch (error) {
@@ -77,7 +77,7 @@ export const getInactiveTasks = async (req, res) => {
   }
 };
 
-// Find active task by Search in active tasks
+// Find active tasks by Search in active tasks
 export const findActiveTasks = async (req, res) => {
   try {
     // Get the search term
