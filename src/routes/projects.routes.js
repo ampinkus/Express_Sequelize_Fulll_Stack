@@ -1,7 +1,7 @@
 // tengo que importar e instanciar la función router
 import { Router } from 'express';
 // tengo que importar los controladores de las rutas desde project.controller.js
-import { getActiveProjects, getInactiveProjects, findActiveUser,findInactiveUser,addProject, createProject, updateProject,modifyProject, inactivateProject, activateProject, viewProject, getProjectTasks } from '../controllers/project.controller.js';
+import { getActiveProjects, getInactiveProjects, findActiveProject, findInactiveProject, addProject, createProject, updateProject, modifyProject, inactivateProject, activateProject, viewProject, getProjectTasks } from '../controllers/project.controller.js';
 
 //Creo una instancia de la clase Router
 const router = Router();
@@ -12,9 +12,9 @@ router.get('/activeProjects',getActiveProjects) // llamo la función getActivePr
 // obtener los proyectos inactivos
 router.get('/inactiveProjects', getInactiveProjects) // llamo la función getInactiveProject
 // buscar un proyecto entre los proyectos activos
-router.post('/activeProjects',findActiveUser)  // to use the find form
+router.post('/activeProjects',findActiveProject)  // to use the find form
 // buscar un proyecto entre los proyectos inactivos
-router.post('/inactiveProjects',findInactiveUser)  // to use the find form
+router.post('/inactiveProjects',findInactiveProject)  // to use the find form
 // ingresar en el formulario un proyecto nuevo
 router.get('/addProject', addProject);
 // agregar a la base de datos el proyecto ingresado al formulario con la ruta /addProject

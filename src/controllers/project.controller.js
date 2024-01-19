@@ -80,7 +80,7 @@ export const getInactiveProjects = async (req, res) => {
 };
 
 // Find User by Search in active users
-export const findActiveUser = async (req, res) => {
+export const findActiveProject = async (req, res) => {
   try {
     // Get the search term
     let searchTerm = req.body.search;
@@ -111,7 +111,7 @@ export const findActiveUser = async (req, res) => {
 };
 
 // Find User by Search in inactive users
-export const findInactiveUser = async (req, res) => {
+export const findInactiveProject = async (req, res) => {
   try {
     // Get the search term
     let searchTerm = req.body.search;
