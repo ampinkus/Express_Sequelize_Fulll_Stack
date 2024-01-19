@@ -4,7 +4,7 @@ import app from "./app.js";
 import {sequelize} from "./database/database.js";
 
 // define the port number from the environment variables or use port 4000
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 // creo una función main que sea asíncrona.
 async function main() { 

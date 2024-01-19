@@ -14,7 +14,7 @@
         type="button"
         class="btn btn-primary align-self-center"
       >
-        <i class="bi bi-arrow-90deg-down"></i> &nbsp Inactivos</a
+        <i class="bi bi-arrow-90deg-down"></i> &nbsp Inactivas</a
       >
 
       <a
@@ -48,14 +48,14 @@
         </th>
         <th scope="col">
           <a
-            href="/activeTasks/?sort=priority&order=ASC"
+            href="/activeTasks/?sort=done&order=ASC"
             type="button"
             class="btn btn-outline-primary"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Finalizado &nbsp
           <a
-            href="/activeTasks/?sort=priority&order=DESC"
+            href="/activeTasks/?sort=done&order=DESC"
             type="button"
             class="btn btn-outline-primary"
             ><i class="bi bi-caret-down"></i
@@ -64,14 +64,14 @@
         <!-- Repeat similar code for other columns -->
         <th scope="col">
           <a
-            href="/activeTasks/?sort=description&order=ASC"
+            href="/activeTasks/?sort=projectId&order=ASC"
             type="button"
             class="btn btn-outline-primary"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Id del Proyecto &nbsp
           <a
-            href="/activeTasks/?sort=description&order=DESC"
+            href="/activeTasks/?sort=projectId&order=DESC"
             type="button"
             class="btn btn-outline-primary"
             ><i class="bi bi-caret-down"></i
@@ -101,6 +101,16 @@
       <tr>
         <th scope="row" class="text-center"><%= task.id %></th>
         <td class="text-center"><%= task.name %></td>
+        <td class="text-center">
+          <!-- Replace 0 with No  and 1 with Si -->
+          <% if (task.done == 0) { %>
+            No
+          <% } else if (task.done == 1) { %>
+            Si
+          <% } else { %>
+            <%= task.done %>
+          <% } %>
+        </td>
         <td class="text-center"><%= task.projectId %></td>
         <td class="text-center"><%= task.description %></td>
         <td class="text-center">

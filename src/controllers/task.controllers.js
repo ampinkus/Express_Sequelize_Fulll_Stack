@@ -19,7 +19,7 @@ export const getActiveTasks = async (req, res) => {
     // Check if sort and order parameters are provided
     if (sort && order) {
       // Validate that the provided sort column is one of the allowed columns
-      const allowedColumns = ["name", "done", "projectId"];
+      const allowedColumns = ["name", "done", "projectId", "description" ];
       if (allowedColumns.includes(sort)) {
         orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
       } else {
