@@ -10,6 +10,8 @@ import { __filename, __dirname } from "./utils.js";
 
 // para capturar los errores colocamos todos los métodos en un try catch
 // obtener todos los proyectos activos de la base de datos projects
+
+
 export const getActiveProjects = async (req, res) => {
   try {
     const { sort, order } = req.query; // get the status from the call of the API

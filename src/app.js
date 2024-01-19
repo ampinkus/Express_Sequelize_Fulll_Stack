@@ -6,9 +6,10 @@ import path from 'path';  // Import the 'path' module
 // importo __filename y __dirname de utils para obtener la ruta del archivo actual
 import { __filename, __dirname } from './utils.js';
 
-// importo las rutas de project y task. Tengo que usar el .js porque son archivos
+// Tengo que importar todas las rutas de la API. Tengo que usar el .js porque son archivos
 import projectRoutes from './routes/projects.routes.js';
 import taskRoutes from './routes/tasks.routes.js';
+import homeRoutes from './routes/home.routes.js';
 
 //creo una app con express
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 // quiero que app use las rutas
 app.use(projectRoutes);
 app.use(taskRoutes);
+app.use(homeRoutes);
 
 //settings
 app.set('views', path.join(__dirname, 'views'));  // Set the view path
