@@ -12,13 +12,13 @@ router.get('/activeTasks',getActiveTasks) // llamo la función getActiveTasks
 // obtener las tareas inactivos
 router.get('/inactiveTasks', getInactiveTasks) // llamo la función getInactiveTasks
 // buscar una tarea entre las tareas activos
-router.post('/activeTask',findActiveTasks)  // to use the find form
+router.post('/activeTask',findActiveTasks)  // llamo a la función findActiveTasks
 // buscar una tarea entre las tareas inactivas
-router.post('/inactiveTask',findInactiveTasks)  // to use the find form
+router.post('/inactiveTask',findInactiveTasks)  // llamo a la función findInactiveTasks
 // ingresar en el formulario una tarea nueva
 router.get('/addTask', addTask);
 // agregar a la base de datos la tarea ingresada al formulario con la ruta /addTask
-router.post('/createTask',createTask) // llamo la función createProject
+router.post('/createTask',createTask) // llamo la función createTask
 
 // Abrir formulario para modificar un tarea
 router.get('/modifyTask/:id',modifyTask)

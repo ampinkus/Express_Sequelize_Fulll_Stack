@@ -12,27 +12,27 @@ import { __filename, __dirname } from "./utils.js";
 // obtener todas las tareas activas de la base de datos tasks
 export const getActiveTasks = async (req, res) => {
   try {
-    const { sort, order } = req.query; // get the status from the call of the API
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    const { sort, order } = req.query; // obtener la información para ordenar las tareas
+    let orderCriteria = [["name", "ASC"]]; // Ordenamiento por defecto
     let titulo = "Tareas Activas";
 
-    // Check if sort and order parameters are provided
+    // Controlo si los parámetros de ordenamiento son proporcionados
     if (sort && order) {
-      // Validate that the provided sort column is one of the allowed columns
+      // Validar que la columna de ordenamiento sea una de las permitidas
       const allowedColumns = ["name", "done", "projectId", "description" ];
       if (allowedColumns.includes(sort)) {
-        orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
+        orderCriteria = [[sort, order.toUpperCase()]]; // configurar el criterio de ordenamiento
       } else {
-        // Handle invalid sort column
+        // Si la columna de ordenamiento inválida
         return res.status(400).send("Invalid sort column");
       }
     }
 
     const tasks = await Task.findAll({
       where: {
-        active: 1, // Filter by active status
+        active: 1, // Filtrar por estado activo
       },
-      order: orderCriteria, // Use the custom sorting criteria
+      order: orderCriteria, // usar el criterio de ordenamiento
     });
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
       tasks,
@@ -46,27 +46,25 @@ export const getActiveTasks = async (req, res) => {
 // obtener todos las tareas inactivas de la base de datos tasks
 export const getInactiveTasks = async (req, res) => {
   try {
-    const { sort, order } = req.query; // get the status from the call of the API
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    const { sort, order } = req.query; // para el ordenamiento se sigue el procedimiento de la API anterior
+    let orderCriteria = [["name", "ASC"]]; 
     let titulo = "Tareas Inactivas";
 
-    // Check if sort and order parameters are provided
+
     if (sort && order) {
-      // Validate that the provided sort column is one of the allowed columns
       const allowedColumns = ["name", "done", "projectId", "description" ];
       if (allowedColumns.includes(sort)) {
-        orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
+        orderCriteria = [[sort, order.toUpperCase()]]; 
       } else {
-        // Handle invalid sort column
         return res.status(400).send("Invalid sort column");
       }
     }
 
     const tasks = await Task.findAll({
       where: {
-        active: 0, // Filter by active status
+        active: 0, // Filtrar por estado inactivo
       },
-      order: orderCriteria, // Use the custom sorting criteria
+      order: orderCriteria,
     });
     res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {
       tasks,
@@ -77,63 +75,61 @@ export const getInactiveTasks = async (req, res) => {
   }
 };
 
-// Find active tasks by Search in active tasks
+// Búsqueda en la página de tareas activas
 export const findActiveTasks = async (req, res) => {
   try {
-    // Get the search term
+    // Obtener el término de búsqueda
     let searchTerm = req.body.search;
-    let titulo = "Tareas Activos";
+    let titulo = "Tareas Activas";
 
-    // Use Sequelize to find task with similar CORREGIR
-    const projects = await Project.findAll({
+    // Usa sequelize para encontrar proyectos con similar nombre, Id de Proyecto o descripción
+    const tasks = await Task.findAll({
       where: {
         [Op.or]: [
           { name: { [Op.like]: `%${searchTerm}%` } },
-          { priority: { [Op.like]: `%${searchTerm}%` } },
+          { projectId: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        active: 1, // Filter by active status
+        active: 1, // Filtrar por estado activo
       },
     });
 
-    // Render the 'activeTask' template with the retrieved tasks
-    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
-      projects,
+    // Renderizar las tareas activas con el resultado de la búsqueda y agregando el título
+    res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
+      tasks,
       titulo,
     });
   } catch (error) {
-    // Handle any errors that occur during the database query
+    // manejar los errores que puedan ocurrir durante la consulta a la base de datos
     console.error("Error finding users:", error);
     res.status(500).send("Internal Server Error");
   }
 };
 
-// Find inactive task by Search in inactive tasks
+// Búsqueda en la página de tareas inactivas
 export const findInactiveTasks = async (req, res) => {
   try {
-    // Get the search term
+    // La implementación es similar a la API anterior
     let searchTerm = req.body.search;
     let titulo = "Tareas Inactivas";
 
-    // Use Sequelize to find projects with similar CORREGIR
-    const projects = await Project.findAll({
+    const tasks = await Task.findAll({
       where: {
         [Op.or]: [
           { name: { [Op.like]: `%${searchTerm}%` } },
-          { priority: { [Op.like]: `%${searchTerm}%` } },
+          { projectId: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        active: 0, // Filter by inactive status
+        active: 1, // Filtrar por estado activo
       },
     });
 
-    // Render the 'inactiveTasks' template with the retrieved tasks  CORREGIR  
-    res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), { 
-      projects,
+    // Renderizar las tareas activas con el resultado de la búsqueda y agregando el título
+    res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {
+      tasks,
       titulo,
     });
   } catch (error) {
-    // Handle any errors that occur during the database query
     console.error("Error finding users:", error);
     res.status(500).send("Internal Server Error");
   }
