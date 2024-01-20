@@ -9,7 +9,7 @@ import { __filename, __dirname } from "./utils.js";
 
 // para capturar los errores colocamos todos los métodos en un try catch
 
-// obtener todas las tareas activas de la base de datos Task
+// obtener todas las tareas activas de la base de datos tasks
 export const getActiveTasks = async (req, res) => {
   try {
     const { sort, order } = req.query; // get the status from the call of the API
@@ -43,17 +43,17 @@ export const getActiveTasks = async (req, res) => {
   }
 };
 
-// obtener todos las tareas inactivas de la base de datos task
+// obtener todos las tareas inactivas de la base de datos tasks
 export const getInactiveTasks = async (req, res) => {
   try {
-    const { sort, order} = req.query; // get the status from the call of the API
+    const { sort, order } = req.query; // get the status from the call of the API
     let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
     let titulo = "Tareas Inactivas";
 
     // Check if sort and order parameters are provided
     if (sort && order) {
       // Validate that the provided sort column is one of the allowed columns
-      const allowedColumns = ["name", "priority", "description"];
+      const allowedColumns = ["name", "done", "projectId", "description" ];
       if (allowedColumns.includes(sort)) {
         orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
       } else {
@@ -62,14 +62,14 @@ export const getInactiveTasks = async (req, res) => {
       }
     }
 
-    const projects = await Project.findAll({
+    const tasks = await Task.findAll({
       where: {
         active: 0, // Filter by active status
       },
       order: orderCriteria, // Use the custom sorting criteria
     });
-    res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
-      projects,
+    res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {
+      tasks,
       titulo,
     });
   } catch (error) {

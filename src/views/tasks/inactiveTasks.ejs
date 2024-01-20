@@ -1,7 +1,8 @@
+<!-- La página que presenta las tareas inactivas -->
 <!-- Incluyo el header de Bootstrap -->
 <%- include('../partials/head.ejs') %>
 <!-- Incluyo la barra de navegación -->
-<%- include('../partials/inactiveNav.ejs') %>
+<%- include('../partials/tasks/inactiveNav.ejs') %>
 
 <div class="container pt-4 pb-2">
   <div class="row ">
@@ -10,10 +11,10 @@
     </div>
     <div class="col-2 d-flex justify-content-around">
       <a
-      href="/activeProjects" 
+      href="/activeTasks" 
       type="button"
       class="btn btn-primary align-self-center">
-      <i class="bi bi-arrow-90deg-up"></i> &nbsp Activos</a>
+      <i class="bi bi-arrow-90deg-up"></i> &nbsp Activas</a>
 
     </div>
   </div>
@@ -24,46 +25,62 @@
         <th scope="col">id</th>
         <th scope="col">
           <a
-            href="/inactiveProjects/?sort=name&order=ASC"
+            href="/inactiveTasks/?sort=name&order=ASC"
             type="button"
-            class="btn btn-outline-light"
+            class="btn btn-outline-primary"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Nombre &nbsp
           <a
-            href="/inactiveProjects/?sort=name&order=DESC"
+            href="/inactiveTasks/?sort=name&order=DESC"
             type="button"
-            class="btn btn-outline-light"
+            class="btn btn-outline-primary"
             ><i class="bi bi-caret-down"></i
           ></a>
         </th>
         <th scope="col">
           <a
-            href="/inactiveProjects/?sort=priority&order=ASC"
+            href="/inactiveTasks/?sort=done&order=ASC"
             type="button"
-            class="btn btn-outline-light"
+            class="btn btn-outline-primary"
             ><i class="bi bi-caret-up"></i
           ></a>
-          &nbsp Prioridad &nbsp
+          &nbsp Finalizado &nbsp
           <a
-            href="/inactiveProjects/?sort=priority&order=DESC"
+            href="/inactiveTasks/?sort=done&order=DESC"
             type="button"
-            class="btn btn-outline-light"
+            class="btn btn-outline-primary"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <!-- Repeat similar code for other columns -->
+        <th scope="col">
+          <a
+            href="/inactiveTasks/?sort=projectId&order=ASC"
+            type="button"
+            class="btn btn-outline-primary"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Id del Proyecto &nbsp
+          <a
+            href="/inactiveTasks/?sort=projectId&order=DESC"
+            type="button"
+            class="btn btn-outline-primary"
             ><i class="bi bi-caret-down"></i
           ></a>
         </th>
         <th scope="col">
           <a
-            href="/inactiveProjects/?sort=description&order=ASC"
+            href="/inactiveTasks/?sort=description&order=ASC"
             type="button"
-            class="btn btn-outline-light"
+            class="btn btn-outline-primary"
             ><i class="bi bi-caret-up"></i
           ></a>
           &nbsp Descripción &nbsp
           <a
-            href="/inactiveProjects/?sort=description&order=DESC"
+            href="/inactiveTasks/?sort=description&order=DESC"
             type="button"
-            class="btn btn-outline-light"
+            class="btn btn-outline-primary"
             ><i class="bi bi-caret-down"></i
           ></a>
         </th>
@@ -72,26 +89,37 @@
     </thead>
 
     <tbody>
-      <% projects.forEach(project => { %>
+      <% tasks.forEach(task => { %>
         <tr>
-          <th scope="row" class="text-center"><%= project.id %></th>
-          <td class="text-center"><%= project.name %></td>
-          <td class="text-center"><%= project.priority %></td>
-          <td class="text-center"><%= project.description %></td>
+          <th scope="row" class="text-center"><%= task.id %></th>
+          <td class="text-center"><%= task.name %></td>
           <td class="text-center">
+            <!-- Replace 0 with No  and 1 with Si -->
+            <% if (task.done == 0) { %>
+              No
+            <% } else if (task.done == 1) { %>
+              Si
+            <% } else { %>
+              <%= task.done %>
+            <% } %>
+          </td>
+          <td class="text-center"><%= task.projectId %></td>
+          <td class="text-center"><%= task.description %></td>
+          <td class="text-center">
+           
             <form
-            action="/activateProject/<%= project.id %>"
-            method="POST"
-            onsubmit="return confirm('Está seguro de activar el proyecto ?');"
-            style="display: inline"
-          >
+              action="/activateTask/<%= task.id %>"
+              method="POST"
+              onsubmit="return confirm('Está seguro de activar la tarea ?');"
+              style="display: inline"
+            >
             <button type="submit" class="btn btn-success btn-small">
               <i class="bi bi-arrow-clockwise"></i>&nbsp Activar
-            </button>
-          </form>
+              </button>
+            </form>
           </td>
         </tr>
-      <% }); %>
+        <% }); %>
     </tbody>
   </table>
 </div>
