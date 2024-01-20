@@ -28,6 +28,9 @@ export const Task = sequelize.define(
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
+      comment: {
+        type: DataTypes.STRING,
+      },
     },
     {
       timestamps: false,

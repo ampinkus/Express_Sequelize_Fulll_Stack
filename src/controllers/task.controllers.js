@@ -123,8 +123,6 @@ export const findInactiveTasks = async (req, res) => {
         active: 1, // Filtrar por estado activo
       },
     });
-
-    // Renderizar las tareas activas con el resultado de la búsqueda y agregando el título
     res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {
       tasks,
       titulo,
@@ -135,39 +133,39 @@ export const findInactiveTasks = async (req, res) => {
   }
 };
 
-//Agregar una tarea
+//Agregar una tarea mostrando la forma addTask
 export const addTask = async (req, res) => {
-  res.render(path.join(__dirname, "../views/projects/addProject.ejs"));
+  res.render(path.join(__dirname, "../views/tasks/addTask.ejs"));
 };
 
 // crear una tarea nueva en la base de datos de tareas
 export const createTask = async (req, res) => {
   try {
     let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
-    let titulo = "Proyectos Activos";
+    let titulo = "Tareas Activas";
     // se obtienen los datos del body
     // console.log(req.body);
     // quiero extraer los datos del body, uso un deconstruct
-    const { name, priority, description, comment } = req.body;
+    const { name, projectId, description, comment } = req.body;
     // guardo los datos enviados en la base, newProject representa la fila que se ha guardado
     // en la tabla projects. The Sequelize command await Project.create() is used to create a
     // new instance of the Project model and insert a new record into the corresponding table in the database.
     // The await keyword is used to wait for the asynchronous operation to complete before moving on to the next line of code.
-    const newProject = await Project.create({
+    const newTask = await Task.create({
       name,
-      priority,
+      projectId,
       description,
       comment,
     });
     // renderizo la vista projects/activeProjects.ejs
-    const projects = await Project.findAll({
+    const tasks = await Task.findAll({
       where: {
         active: 1, // Filter by active status
       },
       order: orderCriteria, // Use the custom sorting criteria
     });
-    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
-      projects,
+    res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
+      tasks,
       titulo,
     });
   } catch (error) {
@@ -178,28 +176,27 @@ export const createTask = async (req, res) => {
 // modificar una tarea de la base de datos tareas, presento en el formulario modifyTasks.ejs la tarea que se quiere modificar
 export const modifyTask = async (req, res) => {
   try {
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
-    let titulo = "Proyectos Activos"
+    let titulo = "Tareas Activas"
     // Use Sequelize to find a user by ID
-   const project = await Project.findOne({
+   const task = await Task.findOne({
     where: {
       id: req.params.id,
     },
   });
 
-    if (project) {
+    if (task) {
       // If the user is found, render the 'modifyProject' view
-      res.render(path.join(__dirname, "../views/projects/modifyProject.ejs"), {
-        project,
+      res.render(path.join(__dirname, "../views/tasks/modifyTask.ejs"), {
+        task,
         titulo,
       });
     } else {
       // Handle the case where the user with the specified ID is not found
-      res.status(404).send('User not found');
+      res.status(404).send('Task not found');
     }
   } catch (error) {
     // Handle any errors that occur during the database query
-    console.error('Error retrieving project:', error);
+    console.error('Error retrieving task:', error);
     res.status(500).send('Internal Server Error');
   }
 };
@@ -210,33 +207,33 @@ export const updateTask = async (req, res) => {
     // let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
     // let titulo = "Proyectos Activos";
       // Use Sequelize to find a user by ID
-   const project = await Project.findOne({
+   const task = await Task.findOne({
     where: {
       id: req.params.id,
     },
   });
-    const { name, priority, description, comment } = req.body;
+    const { name, projectId, description, comment } = req.body;
 
     // Check if the task exists
-    if (!project) {
-      return res.status(404).send('User not found');
+    if (!task) {
+      return res.status(404).send('Task not found');
     }
 
     // Update the task
-    await project.update({
+    await task.update({
       name,
-      priority,
+      projectId,
       description,
       comment,
     });
     // mostrar la versión actualizada de la tarea modificada en la tabla de tareas activos
-    await getActiveProjects(req, res);
-    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
+    await getActiveTasks(req, res);
+    res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
     });
     
   } catch (error) {
     // Handle any errors that occur during the update
-    console.error('Error updating user:', error);
+    console.error('Error updating task:', error);
     res.status(500).send('Internal Server Error');
   }
 };

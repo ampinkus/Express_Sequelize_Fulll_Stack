@@ -1,24 +1,29 @@
-<!-- Se renderiza el formulario con los datos del proyecto que se quiere modificar 
-    en action="#" hay que incluir la ruta post para enviar a tabla projects los datos modificados
--->
-
+<!-- Pagina del formulario de creación de tareas -->
 
 <!-- Incluyo el header de Bootstrap -->
 <%- include('../partials/head.ejs') %>
 <!-- Incluyo la barra de navegación -->
-<%- include('../partials/activeNav.ejs') %>
+<%- include('../partials/tasks/activeNav.ejs') %>
 
 <!-- input form.  Note that the action is a POST request   -->
 <div class="container pt-4 pb-2">
   <div class="row mb-3">
-    <div class="col text-center">
-      <h3> Modificación del proyecto: <%= project.name %></h3>
+    <div class="col-10">
+      <h2>Agregar Tarea</h2>
+    </div>
+    <div class="col-2 d-flex justify-content-around">
+      <a
+      href="/activeTasks" 
+      type="button"
+      class="btn btn-primary align-self-center">
+      <i class="bi bi-arrow-90deg-up"></i> &nbsp Tareas Activos</a>
+
     </div>
   </div>
   <form
     class="row g-3 needs-validation"
     method="POST"
-    action="/updateProject/<%= project.id %>"
+    action="/createTask"
     novalidate
   >
     <div class="col-4">
@@ -27,33 +32,33 @@
           type="text"
           class="form-control"
           id="floatingInput"
-          value="<%= project.name %>"
+          value=""
           placeholder="Nombre"
           name="name"
         />
         <label for="floatingInput">Nombre</label>
       </div>
     </div>
-    <div class="col-1">
+    <div class="col-2">
       <div class="form-floating mb-3">
         <input
           type="number"
           class="form-control"
           id="floatingInput"
-          value="<%= project.priority %>"
-          placeholder="Prioridad"
-          name="priority"
+          value=""
+          placeholder="Id Proyecto"
+          name="projectId"
         />
-        <label for="floatingInput">Prioridad</label>
+        <label for="floatingInput">Id Proyecto</label>
       </div>
     </div>
-    <div class="col-7">
+    <div class="col-6">
       <div class="form-floating mb-3">
         <input
           type="text"
           class="form-control"
           id="floatingInput"
-          value="<%= project.description %>"
+          value=""
           placeholder="Descripción"
           name="description"
         />
@@ -63,21 +68,20 @@
     <!-- Use a new line -->
     <div class="col-12">
       <div class="form-floating mb-3">
-        <input
-          style="height: 200px;"
-          type="text"
+        <textarea
           class="form-control"
-          id="floatingInput"
-          value="<%= project.comment %>"
-          placeholder="Comentarios"
+          id="comments"
+          value=""
+          placeholder="Comentario"
           name="comment"
-        />
-        <label for="floatingInput">Comentarios</label>
+          style="height: 200px"
+        ></textarea>
+        <label for="floatingInput">Comentario</label>
       </div>
     </div>
 
     <div class="col-12 d-grid">
-      <button class="btn btn-primary" type="submit">Modificar</button>
+      <button class="btn btn-primary" type="submit">Agregar</button>
     </div>
   </form>
 </div>

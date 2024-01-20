@@ -2,17 +2,24 @@
     en action="#" hay que incluir la ruta post para enviar a tabla projects los datos modificados
 -->
 
-
 <!-- Incluyo el header de Bootstrap -->
 <%- include('../partials/head.ejs') %>
 <!-- Incluyo la barra de navegación -->
-<%- include('../partials/activeNav.ejs') %>
+<%- include('../partials/projects/activeNav.ejs') %>
 
 <!-- input form.  Note that the action is a POST request   -->
 <div class="container pt-4 pb-2">
   <div class="row mb-3">
     <div class="col text-center">
       <h3> Modificación del proyecto: <%= project.name %></h3>
+    </div>
+    <div class="col-2 d-flex justify-content-around">
+      <a
+      href="/activeProjects" 
+      type="button"
+      class="btn btn-primary align-self-center">
+      <i class="bi bi-arrow-90deg-up"></i> &nbsp Proyectos Activos</a>
+
     </div>
   </div>
   <form

@@ -222,7 +222,7 @@ export const updateProject = async (req, res) => {
 
     // Check if the user exists
     if (!project) {
-      return res.status(404).send('User not found');
+      return res.status(404).send('Project not found');
     }
 
     // Update the user
@@ -239,7 +239,7 @@ export const updateProject = async (req, res) => {
     
   } catch (error) {
     // Handle any errors that occur during the update
-    console.error('Error updating user:', error);
+    console.error('Error updating project:', error);
     res.status(500).send('Internal Server Error');
   }
 };
