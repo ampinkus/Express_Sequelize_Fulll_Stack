@@ -1,3 +1,5 @@
+// Rutas del formulario de tareas
+
 // tengo que importar e instanciar la función router
 import { Router } from 'express';
 // tengo que importar los controladores de las rutas desde task.controller.js
@@ -6,34 +8,33 @@ import { getActiveTasks, getInactiveTasks, findActiveTasks, findInactiveTasks, a
 //Creo una instancia de la clase Router
 const router = Router();
 
-// creo las rutas
-// obtener las tareas activos
-router.get('/activeTasks',getActiveTasks) // llamo la función getActiveTasks
-// obtener las tareas inactivos
-router.get('/inactiveTasks', getInactiveTasks) // llamo la función getInactiveTasks
+// Creo las rutas
+// Obtener las tareas activos
+router.get('/activeTasks',getActiveTasks) // Llamo la función getActiveTasks
+// Obtener las tareas inactivos
+router.get('/inactiveTasks', getInactiveTasks) // Llamo la función getInactiveTasks
+// Buscar una tarea entre las tareas activos
+router.post('/activeTask',findActiveTasks)  
+// Buscar una tarea entre las tareas inactivas
+router.post('/inactiveTask',findInactiveTasks)  
 
-// buscar una tarea entre las tareas activos
-router.post('/activeTask',findActiveTasks)  // llamo a la función findActiveTasks
-// buscar una tarea entre las tareas inactivas
-router.post('/inactiveTask',findInactiveTasks)  // llamo a la función findInactiveTasks
-
-// ingresar en el formulario una tarea nueva
+// Ingresar en el formulario una tarea nueva
 router.get('/addTask', addTask);
-// agregar a la base de datos la tarea ingresada al formulario con la ruta /addTask
+// Agregar a la base de datos la tarea ingresada al formulario con la ruta /addTask
 router.post('/createTask',createTask) // llamo la función createTask
 
 // Abrir formulario para modificar un tarea
 router.get('/modifyTask/:id',modifyTask)
-// modificar una tarea
+// Modificar una tarea en base al formulario anterior
 router.post('/updateTask/:id',updateTask)
 
-// pasar una tarea de activa a inactiva
+// Pasar una tarea de activa a inactiva
 router.post('/inactivateTask/:id',inactivateTask)
-// pasar una tarea de inactiva a activa
+// Pasar una tarea de inactiva a activa
 router.post('/activateTask/:id',activateTask)
 
-// obtener una tarea en base al id tomado del formulario de proyectos activos  
+// Obtener una tarea en base al id tomado del formulario de proyectos activos  
 router.get('/viewTask/:id',viewTask)
 
-// tengo que exportar las rutas
+// Tengo que exportar las rutas
 export default router;

@@ -1,6 +1,5 @@
-// aquí se programan las funciones de las rutas de la API
-// tengo que traer los modelos de la base de datos para poder guardar los datos
-import { Project } from "../models/project.js";
+// En este controlador se programan las funciones de las rutas de task.routes
+// Tengo que traer los modelos de la base de datos para poder guardar los datos
 import { Task } from "../models/Task.js";
 import path from "path";
 import { Op } from "sequelize";
@@ -9,7 +8,7 @@ import { __filename, __dirname } from "./utils.js";
 
 // para capturar los errores colocamos todos los métodos en un try catch
 
-// obtener todas las tareas activas de la base de datos tasks
+// Obtener todas las tareas activas de la base de datos tasks
 export const getActiveTasks = async (req, res) => {
   try {
     const { sort, order } = req.query; // obtener la información para ordenar las tareas
@@ -43,7 +42,7 @@ export const getActiveTasks = async (req, res) => {
   }
 };
 
-// obtener todos las tareas inactivas de la base de datos tasks
+// Obtener todos las tareas inactivas de la base de datos tasks
 export const getInactiveTasks = async (req, res) => {
   try {
     const { sort, order } = req.query; // para el ordenamiento se sigue el procedimiento de la API anterior
@@ -94,7 +93,7 @@ export const findActiveTasks = async (req, res) => {
       },
     });
 
-    // Renderizar las tareas activas con el resultado de la búsqueda y agregando el título
+    // Mostrar las tareas activas con el resultado de la búsqueda y agregando el título
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
       tasks,
       titulo,
@@ -148,21 +147,22 @@ export const createTask = async (req, res) => {
     // quiero extraer los datos del body, uso un deconstruct
     const { name, projectId, description, comment } = req.body;
     // guardo los datos enviados en la base, newProject representa la fila que se ha guardado
-    // en la tabla projects. The Sequelize command await Project.create() is used to create a
-    // new instance of the Project model and insert a new record into the corresponding table in the database.
-    // The await keyword is used to wait for the asynchronous operation to complete before moving on to the next line of code.
+    // en la tabla projects. El comando Sequelize await Project.create() se utiliza para crear una nueva 
+    // instancia del modelo Project e insertar un nuevo registro en la tabla correspondiente de la base de datos. 
+    // La palabra clave await se utiliza para esperar a que la operación asíncrona se complete antes de pasar a 
+    // la siguiente línea de código.
     const newTask = await Task.create({
       name,
       projectId,
       description,
       comment,
     });
-    // renderizo la vista projects/activeProjects.ejs
+    // Muestro la vista projects/activeProjects.ejs
     const tasks = await Task.findAll({
       where: {
-        active: 1, // Filter by active status
+        active: 1, // Filtro por estado activo
       },
-      order: orderCriteria, // Use the custom sorting criteria
+      order: orderCriteria, // Uso el criterio de ordenamiento
     });
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
       tasks,
@@ -173,11 +173,11 @@ export const createTask = async (req, res) => {
   }
 };
 
-// modificar una tarea de la base de datos tareas, presento en el formulario modifyTasks.ejs la tarea que se quiere modificar
+// Modificar una tarea de la base de datos tareas, presento en el formulario modifyTasks.ejs la tarea que se quiere modificar
 export const modifyTask = async (req, res) => {
   try {
     let titulo = "Tareas Activas"
-    // Use Sequelize to find a user by ID
+    // Uso Sequelize para encontrar una tarea por su ID
    const task = await Task.findOne({
     where: {
       id: req.params.id,
@@ -185,54 +185,50 @@ export const modifyTask = async (req, res) => {
   });
 
     if (task) {
-      // If the user is found, render the 'modifyProject' view
+      // Si se encontró la tarea, muestro la vista modifyTasks.ejs
       res.render(path.join(__dirname, "../views/tasks/modifyTask.ejs"), {
         task,
         titulo,
       });
     } else {
-      // Handle the case where the user with the specified ID is not found
+      // Manejo el caso de que no se encuentre la tarea
       res.status(404).send('Task not found');
     }
   } catch (error) {
-    // Handle any errors that occur during the database query
+    // Manejo el caso de error en la base de datos
     console.error('Error retrieving task:', error);
     res.status(500).send('Internal Server Error');
   }
 };
 
-// actualizo la tarea en base a los datos del formulario modifyTasks.ejs 
+// Actualizo la tarea en base a los datos del formulario modifyTasks.ejs 
 export const updateTask = async (req, res) => {
   try {
-    // let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
-    // let titulo = "Proyectos Activos";
-      // Use Sequelize to find a user by ID
+      // Uso Sequelize para encontrar una tarea por su ID
    const task = await Task.findOne({
     where: {
       id: req.params.id,
     },
   });
     const { name, projectId, description, comment } = req.body;
-
-    // Check if the task exists
+    // Compruebo si se encontró la tarea
     if (!task) {
       return res.status(404).send('Task not found');
     }
-
-    // Update the task
+    // Actualizo la tarea
     await task.update({
       name,
       projectId,
       description,
       comment,
     });
-    // mostrar la versión actualizada de la tarea modificada en la tabla de tareas activas
+    // Mostrar la versión actualizada de la tarea modificada en la tabla de tareas activas
     await getActiveTasks(req, res);
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
     });
     
   } catch (error) {
-    // Handle any errors that occur during the update
+    // Manjeo el caso de error en la base de datos
     console.error('Error updating task:', error);
     res.status(500).send('Internal Server Error');
   }

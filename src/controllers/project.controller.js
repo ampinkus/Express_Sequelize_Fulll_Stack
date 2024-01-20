@@ -1,4 +1,4 @@
-// aquí se programan las funciones de las rutas de la API
+//En este controlador están las funciones de las rutas de project.routes
 // tengo que traer los modelos de la base de datos para poder guardar los datos
 import { Project } from "../models/project.js";
 import { Task } from "../models/Task.js";
@@ -7,33 +7,34 @@ import { Op } from "sequelize";
 // importo __filename y __dirname de utils para obtener la ruta del archivo actual
 import { __filename, __dirname } from "./utils.js";
 
-// para capturar los errores colocamos todos los métodos en un try catch
-// obtener todos los proyectos activos de la base de datos projects
+// para capturar los errores colocamos todos los métodos en un try-catch
 
+// Obtener todos los proyectos activos de la base de datos projects
 export const getActiveProjects = async (req, res) => {
   try {
-    const { sort, order } = req.query; // get the status from the call of the API
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    const { sort, order } = req.query; // Obtener el estatus de ordenamiento
+    let orderCriteria = [["name", "ASC"]]; // Criterio de ordenamiento por defecto
     let titulo = "Proyectos Activos";
 
-    // Check if sort and order parameters are provided
+    // Comprobar si se proveen los parámetros de ordenamiento
     if (sort && order) {
-      // Validate that the provided sort column is one of the allowed columns
+      // Validar que la columna de ordenamiento sea una de las permitidas
       const allowedColumns = ["name", "priority", "description"];
       if (allowedColumns.includes(sort)) {
-        orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
+        orderCriteria = [[sort, order.toUpperCase()]]; // Configurar el criterio de ordenamiento
       } else {
-        // Handle invalid sort column
+        // Manejar la columna de ordenamiento inválida
         return res.status(400).send("Invalid sort column");
       }
     }
 
     const projects = await Project.findAll({
       where: {
-        active: 1, // Filter by active status
+        active: 1, // Filtrar por proyectos activos
       },
-      order: orderCriteria, // Use the custom sorting criteria
+      order: orderCriteria, // Usa el criterio de ordenamiento
     });
+    // Mostramos la vista de proyectos activos
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
       projects,
       titulo,
@@ -43,30 +44,28 @@ export const getActiveProjects = async (req, res) => {
   }
 };
 
-// obtener todos los proyectos inactivos de la base de datos projects
+// Obtener todos los proyectos inactivos de la base de datos projects
+// la función getInactiveProjects es casi idéntica a getActiveProjects
 export const getInactiveProjects = async (req, res) => {
   try {
-    const { sort, order} = req.query; // get the status from the call of the API
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    const { sort, order} = req.query; 
+    let orderCriteria = [["name", "ASC"]];
     let titulo = "Proyectos Inactivos";
 
-    // Check if sort and order parameters are provided
     if (sort && order) {
-      // Validate that the provided sort column is one of the allowed columns
       const allowedColumns = ["name", "priority", "description"];
       if (allowedColumns.includes(sort)) {
-        orderCriteria = [[sort, order.toUpperCase()]]; // Set the custom sorting criteria
+        orderCriteria = [[sort, order.toUpperCase()]];
       } else {
-        // Handle invalid sort column
         return res.status(400).send("Invalid sort column");
       }
     }
 
     const projects = await Project.findAll({
       where: {
-        active: 0, // Filter by active status
+        active: 0, // Filtrar por proyectos inactivos
       },
-      order: orderCriteria, // Use the custom sorting criteria
+      order: orderCriteria, 
     });
     res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
       projects,
@@ -77,14 +76,14 @@ export const getInactiveProjects = async (req, res) => {
   }
 };
 
-// Find User by Search in active projects
+// Buscar un proyecto activo según un criterio de búsqueda en la base de datos
 export const findActiveProject = async (req, res) => {
   try {
-    // Get the search term
+    // Obtener el criterio de búsqueda
     let searchTerm = req.body.search;
     let titulo = "Proyectos Activos";
 
-    // Use Sequelize to find projects with similar name, priority or description
+    // Usar sequelize para encontrar proyectos similares por nombre, prioridad o descripción
     const projects = await Project.findAll({
       where: {
         [Op.or]: [
@@ -92,30 +91,29 @@ export const findActiveProject = async (req, res) => {
           { priority: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        active: 1, // Filter by active status
+        active: 1, // Filtrar por estado activo
       },
     });
 
-    // Render the 'activeProjects' template with the retrieved projects
+    // Mostrar la vista de proyectos activos con el criterio de búsqueda
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
       projects,
       titulo,
     });
   } catch (error) {
-    // Handle any errors that occur during the database query
+    // Manejo de errores
     console.error("Error finding users:", error);
     res.status(500).send("Internal Server Error");
   }
 };
 
-// Find project by Search in inactive project 
+// Buscar un proyecto inactivo según un criterio de búsqueda en la base de datos 
+// la función findInactiveProject es casi idéntica a findActiveProject
 export const findInactiveProject = async (req, res) => {
   try {
-    // Get the search term
     let searchTerm = req.body.search;
     let titulo = "Proyectos Inactivos";
 
-    // Use Sequelize to find projects with similar name, priority or description
     const projects = await Project.findAll({
       where: {
         [Op.or]: [
@@ -123,40 +121,37 @@ export const findInactiveProject = async (req, res) => {
           { priority: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        active: 0, // Filter by inactive status
+        active: 0, // Filtrar por estado inactivo
       },
     });
 
-    // Render the 'inactiveProjects' template with the retrieved projects
     res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
       projects,
       titulo,
     });
   } catch (error) {
-    // Handle any errors that occur during the database query
     console.error("Error finding users:", error);
     res.status(500).send("Internal Server Error");
   }
 };
 
-//Agregar un proyecto mostrando la forma addProject
+//Agregar un proyecto mostrando la forma addProject para ingresar la información
 export const addProject = async (req, res) => {
   res.render(path.join(__dirname, "../views/projects/addProject.ejs"));
 };
 
-// crear un proyecto nuevo en la base de datos de projects
+// Crear un proyecto nuevo en la base de datos de projects con lai información del formulario anterior
 export const createProject = async (req, res) => {
   try {
-    let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
+    let orderCriteria = [["name", "ASC"]]; // criterio de ordenamiento por defecto
     let titulo = "Proyectos Activos";
-    // se obtienen los datos del body
-    // console.log(req.body);
-    // quiero extraer los datos del body, uso un deconstruct
+    // se obtienen los datos del body quiero extraer los datos del body, uso un deconstruct
     const { name, priority, description, comment } = req.body;
     // guardo los datos enviados en la base, newProject representa la fila que se ha guardado
-    // en la tabla projects. The Sequelize command await Project.create() is used to create a
-    // new instance of the Project model and insert a new record into the corresponding table in the database.
-    // The await keyword is used to wait for the asynchronous operation to complete before moving on to the next line of code.
+    // en la tabla projects. El comando Sequelize await Project.create() se utiliza para crear una nueva 
+    // instancia del modelo Project e insertar un nuevo registro en la tabla correspondiente de la base de datos. 
+    // La palabra clave await se utiliza para esperar a que la operación asíncrona se complete antes de pasar a 
+    // la siguiente línea de código.
     const newProject = await Project.create({
       name,
       priority,
@@ -166,9 +161,9 @@ export const createProject = async (req, res) => {
     // renderizo la vista projects/activeProjects.ejs
     const projects = await Project.findAll({
       where: {
-        active: 1, // Filter by active status
+        active: 1, // Filtror por proyectos activos
       },
-      order: orderCriteria, // Use the custom sorting criteria
+      order: orderCriteria, //Uso el criterio de ordenamiento
     });
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
       projects,
@@ -179,11 +174,12 @@ export const createProject = async (req, res) => {
   }
 };
 
-// modificar un proyecto de la base de datos projects, presento en el formulario modifyProject.ejs el proyecto que se quiere modificar
+// modificar un proyecto de la base de datos projects, presento en el formulario modifyProject.ejs 
+// el proyecto que se quiere modificar
 export const modifyProject = async (req, res) => {
   try {
     let titulo = "Proyectos Activos"
-    // Use Sequelize to find a user by ID
+    // Uso Sequelize para encontrar un proyecto por su ID
    const project = await Project.findOne({
     where: {
       id: req.params.id,
@@ -191,41 +187,38 @@ export const modifyProject = async (req, res) => {
   });
 
     if (project) {
-      // If the user is found, render the 'modifyProject' view
+      // Si se encontró el proyecto, renderizo la vista modifyProject.ejs
       res.render(path.join(__dirname, "../views/projects/modifyProject.ejs"), {
         project,
         titulo,
       });
     } else {
-      // Handle the case where the user with the specified ID is not found
+      // Manejo el caso de que no se encuentre el proyecto
       res.status(404).send('User not found');
     }
   } catch (error) {
-    // Handle any errors that occur during the database query
+    // Manejo el caso de error en la base de datos
     console.error('Error retrieving project:', error);
     res.status(500).send('Internal Server Error');
   }
 };
 
-// actualizo el proyecto en base a los datos del formulario modifyProject.ejs 
+// Actualizo el proyecto en base a los datos del formulario modifyProject.ejs 
 export const updateProject = async (req, res) => {
   try {
-    // let orderCriteria = [["name", "ASC"]]; // Default sorting criteria
-    // let titulo = "Proyectos Activos";
-      // Use Sequelize to find a user by ID
+      // Uso Sequelize para encontrar un proyecto por su ID
    const project = await Project.findOne({
     where: {
       id: req.params.id,
     },
   });
     const { name, priority, description, comment } = req.body;
-
-    // Check if the user exists
+    //  Compruebo si se encontró el proyecto
     if (!project) {
       return res.status(404).send('Project not found');
     }
 
-    // Update the user
+    // Actualizo el proyecto
     await project.update({
       name,
       priority,
@@ -238,7 +231,7 @@ export const updateProject = async (req, res) => {
     });
     
   } catch (error) {
-    // Handle any errors that occur during the update
+    // Manejo el error en la base de datos
     console.error('Error updating project:', error);
     res.status(500).send('Internal Server Error');
   }
@@ -267,7 +260,7 @@ export const activateProject = async (req, res) => {
     // se obtiene el id del proyecto que se quiere activar
     const { id } = req.params;
     
-    // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
+    // Actualizar el valor de la columna 'active' a 1 
     await Project.update({ active: 1 }, { where: { id } });
     // llamo a la vista projects/inactiveProjects.ejs con las dos lineas de código siguientes:
     await getInactiveProjects(req, res);
@@ -290,6 +283,7 @@ export const viewProject = async (req, res) => {
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
     }
+    // Muestro la vista projects/viewProject.ejs
     res.render(path.join(__dirname, "../views/projects/viewProject.ejs"), {
       project,
     });

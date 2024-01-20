@@ -1,3 +1,4 @@
+// Ruta para la página de inicio
 // tengo que importar e instanciar la función router
 import { Router } from 'express';
 // tengo que importar los controladores de las rutas desde project.controller.js
