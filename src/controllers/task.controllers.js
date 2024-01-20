@@ -226,7 +226,7 @@ export const updateTask = async (req, res) => {
       description,
       comment,
     });
-    // mostrar la versión actualizada de la tarea modificada en la tabla de tareas activos
+    // mostrar la versión actualizada de la tarea modificada en la tabla de tareas activas
     await getActiveTasks(req, res);
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
     });
@@ -245,10 +245,10 @@ export const inactivateTask = async (req, res) => {
     const { id } = req.params;
     
     // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar la tarea
-    await Project.update({ active: 0 }, { where: { id } });
+    await Task.update({ active: 0 }, { where: { id } });
     // llamo a la vista tasks/activeTasks.ejs con las dos lineas de código siguientes:
-    await getActiveProjects(req, res);
-    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
+    await getActiveTasks(req, res);
+    res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -262,10 +262,10 @@ export const activateTask = async (req, res) => {
     const { id } = req.params;
     
     // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar la tarea
-    await Project.update({ active: 1 }, { where: { id } });
+    await Task.update({ active: 1 }, { where: { id } });
     // llamo a la vista tasks/inactiveTasks.ejs con las dos lineas de código siguientes:
-    await getInactiveProjects(req, res);
-    res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
+    await getInactiveTasks(req, res);
+    res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {
     });
     
   } catch (error) {
@@ -279,13 +279,13 @@ export const viewTask = async (req, res) => {
     // traigo el id desde req.params
     const { id } = req.params;
     // busco el proyecto con el id
-    const project = await Project.findOne({ where: { id } });
+    const task = await Task.findOne({ where: { id } });
     // si no encuentra el proyecto envío un error
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
     }
-    res.render(path.join(__dirname, "../views/projects/viewProject.ejs"), {
-      project,
+    res.render(path.join(__dirname, "../views/tasks/viewTask.ejs"), {
+      task,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
