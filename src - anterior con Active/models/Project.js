@@ -26,10 +26,13 @@ export const Project = sequelize.define('projects', {
   comment: {
     type: DataTypes.TEXT,
   },
+  active: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: true,
+  },
 },
 {
   timestamps: true,
-  paranoid: true, // Enable soft deletion
 });
 
 

@@ -24,12 +24,15 @@ export const Task = sequelize.define(
       description: {
         type: DataTypes.STRING,
       },
+      active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+      },
       comment: {
         type: DataTypes.STRING,
       },
     },
     {
-      timestamps: true,
-      paranoid: true, // Enable soft deletion
+      timestamps: false,
     }
   );   

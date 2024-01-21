@@ -1,0 +1,100 @@
+<!-- La página que presenta los proyectos inactivos -->
+<!-- Incluyo el header de Bootstrap -->
+<%- include('../partials/head.ejs') %>
+<!-- Incluyo la barra de navegación -->
+<%- include('../partials/projects/inactiveNav.ejs') %>
+
+<div class="container pt-4 pb-2">
+  <div class="row ">
+    <div class="col-10">
+      <h1><%= titulo  %></h1>
+    </div>
+    <div class="col-2 d-flex justify-content-around">
+      <a
+      href="/activeProjects" 
+      type="button"
+      class="btn btn-primary align-self-center">
+      <i class="bi bi-arrow-90deg-up"></i> &nbsp Activos</a>
+
+    </div>
+  </div>
+
+  <table class="table table-primary table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr class="text-center">
+        <th scope="col">id</th>
+        <th scope="col">
+          <a
+            href="/inactiveProjects/?sort=name&order=ASC"
+            type="button"
+            class="btn btn-outline-light"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Nombre &nbsp
+          <a
+            href="/inactiveProjects/?sort=name&order=DESC"
+            type="button"
+            class="btn btn-outline-light"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <th scope="col">
+          <a
+            href="/inactiveProjects/?sort=priority&order=ASC"
+            type="button"
+            class="btn btn-outline-light"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Prioridad &nbsp
+          <a
+            href="/inactiveProjects/?sort=priority&order=DESC"
+            type="button"
+            class="btn btn-outline-light"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <th scope="col">
+          <a
+            href="/inactiveProjects/?sort=description&order=ASC"
+            type="button"
+            class="btn btn-outline-light"
+            ><i class="bi bi-caret-up"></i
+          ></a>
+          &nbsp Descripción &nbsp
+          <a
+            href="/inactiveProjects/?sort=description&order=DESC"
+            type="button"
+            class="btn btn-outline-light"
+            ><i class="bi bi-caret-down"></i
+          ></a>
+        </th>
+        <th scope="col" style="width: 200px">Acción</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% projects.forEach(project => { %>
+        <tr>
+          <th scope="row" class="text-center"><%= project.id %></th>
+          <td class="text-center"><%= project.name %></td>
+          <td class="text-center"><%= project.priority %></td>
+          <td class="text-center"><%= project.description %></td>
+          <td class="text-center">
+            <form
+            action="/activateProject/<%= project.id %>"
+            method="POST"
+            onsubmit="return confirm('Está seguro de activar el proyecto ?');"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-success btn-small">
+              <i class="bi bi-arrow-clockwise"></i>&nbsp Activar
+            </button>
+          </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<!-- Incluyo el footer de Bootstrap -->
+<%- include('../partials/foot.ejs') %>

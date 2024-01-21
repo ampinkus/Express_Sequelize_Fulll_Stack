@@ -29,7 +29,7 @@ export const getActiveTasks = async (req, res) => {
 
     const tasks = await Task.findAll({
       where: {
-        deletedAt: null, // Filtrar por proyectos activos con las columnas deletedAt = null
+        active: 1, // Filtrar por estado activo
       },
       order: orderCriteria, // usar el criterio de ordenamiento
     });
@@ -60,10 +60,8 @@ export const getInactiveTasks = async (req, res) => {
     }
 
     const tasks = await Task.findAll({
-      paranoid: false, // necesario para incluir las columnas deletedAt
       where: {
-        // Filtrar por proyectos inactivos con las columnas deletedAt != null
-        deletedAt: { [Op.not]: null }, 
+        active: 0, // Filtrar por estado inactivo
       },
       order: orderCriteria,
     });
@@ -91,7 +89,7 @@ export const findActiveTasks = async (req, res) => {
           { projectId: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        deletedAt: null, // Filtrar por estado activo
+        active: 1, // Filtrar por estado activo
       },
     });
 
@@ -115,14 +113,13 @@ export const findInactiveTasks = async (req, res) => {
     let titulo = "Tareas Inactivas";
 
     const tasks = await Task.findAll({
-      paranoid: false, // necesario para incluir las columnas deletedAt
       where: {
         [Op.or]: [
           { name: { [Op.like]: `%${searchTerm}%` } },
           { projectId: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        deletedAt: { [Op.not]: null }, // Filtrar por estado inactivo
+        active: 1, // Filtrar por estado activo
       },
     });
     res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {
@@ -160,9 +157,16 @@ export const createTask = async (req, res) => {
       description,
       comment,
     });
-    // Muestro la vista projects/activeTasks.ejs
-    await getActiveTasks(req, res);
+    // Muestro la vista projects/activeProjects.ejs
+    const tasks = await Task.findAll({
+      where: {
+        active: 1, // Filtro por estado activo
+      },
+      order: orderCriteria, // Uso el criterio de ordenamiento
+    });
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
+      tasks,
+      titulo,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -236,9 +240,8 @@ export const inactivateTask = async (req, res) => {
     // se obtiene el id de la tarea que se quiere desactivar
     const { id } = req.params;
     
-    //// hacer un soft delete del proyecto
-    await Task.destroy({ where: { id } });
-
+    // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar la tarea
+    await Task.update({ active: 0 }, { where: { id } });
     // llamo a la vista tasks/activeTasks.ejs con las dos lineas de código siguientes:
     await getActiveTasks(req, res);
     res.render(path.join(__dirname, "../views/tasks/activeTasks.ejs"), {
@@ -254,8 +257,8 @@ export const activateTask = async (req, res) => {
     // se obtiene el id de la tarea que se quiere activar
     const { id } = req.params;
     
-     // Activar la tarea
-     await Task.restore({ where: { id} });
+    // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar la tarea
+    await Task.update({ active: 1 }, { where: { id } });
     // llamo a la vista tasks/inactiveTasks.ejs con las dos lineas de código siguientes:
     await getInactiveTasks(req, res);
     res.render(path.join(__dirname, "../views/tasks/inactiveTasks.ejs"), {

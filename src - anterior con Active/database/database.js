@@ -10,6 +10,6 @@ export const sequelize = new Sequelize({
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  dialect: 'mysql',  // the dialect of the database we use
-  timezone: '-03:00', // Set the timezone to -3 GMT
+  dialect: 'mysql',
+  // other Sequelize configurations...
 });

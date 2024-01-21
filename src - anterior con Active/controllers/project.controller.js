@@ -30,7 +30,7 @@ export const getActiveProjects = async (req, res) => {
 
     const projects = await Project.findAll({
       where: {
-        deletedAt: null, // Filtrar por proyectos activos con las columnas deletedAt = null
+        active: 1, // Filtrar por proyectos activos
       },
       order: orderCriteria, // Usa el criterio de ordenamiento
     });
@@ -62,10 +62,8 @@ export const getInactiveProjects = async (req, res) => {
     }
 
     const projects = await Project.findAll({
-      paranoid: false, // necesario para incluir las columnas deletedAt
       where: {
-        // Filtrar por proyectos inactivos con las columnas deletedAt != null
-        deletedAt: { [Op.not]: null }, 
+        active: 0, // Filtrar por proyectos inactivos
       },
       order: orderCriteria, 
     });
@@ -93,7 +91,7 @@ export const findActiveProject = async (req, res) => {
           { priority: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        deletedAt: null, // Filtrar por estado activo
+        active: 1, // Filtrar por estado activo
       },
     });
 
@@ -117,14 +115,13 @@ export const findInactiveProject = async (req, res) => {
     let titulo = "Proyectos Inactivos";
 
     const projects = await Project.findAll({
-      paranoid: false, // necesario para incluir las columnas deletedAt
       where: {
         [Op.or]: [
           { name: { [Op.like]: `%${searchTerm}%` } },
           { priority: { [Op.like]: `%${searchTerm}%` } },
           { description: { [Op.like]: `%${searchTerm}%` } },
         ],
-        deletedAt: { [Op.not]: null }, // Filtrar por estado inactivo
+        active: 0, // Filtrar por estado inactivo
       },
     });
 
@@ -143,7 +140,7 @@ export const addProject = async (req, res) => {
   res.render(path.join(__dirname, "../views/projects/addProject.ejs"));
 };
 
-// Crear un proyecto nuevo en la base de datos de projects con la información del formulario anterior
+// Crear un proyecto nuevo en la base de datos de projects con lai información del formulario anterior
 export const createProject = async (req, res) => {
   try {
     let orderCriteria = [["name", "ASC"]]; // criterio de ordenamiento por defecto
@@ -162,8 +159,15 @@ export const createProject = async (req, res) => {
       comment,
     });
     // renderizo la vista projects/activeProjects.ejs
-    await getActiveProjects(req, res);
+    const projects = await Project.findAll({
+      where: {
+        active: 1, // Filtror por proyectos activos
+      },
+      order: orderCriteria, //Uso el criterio de ordenamiento
+    });
     res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
+      projects,
+      titulo,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -233,40 +237,39 @@ export const updateProject = async (req, res) => {
   }
 };
 
-// Pasar de activo a inactivo un proyecto de la base de datos projects usando soft deletion
+// Pasar de activo a inactivo un proyecto de la base de datos projects
 export const inactivateProject = async (req, res) => {
   try {
-    // Obtener el Id del proyecto a desactivar
+    // se obtiene el id del proyecto que se quiere desactivar
     const { id } = req.params;
-
-    // hacer un soft delete del proyecto
-    await Project.destroy({ where: { id } });
-
-    // Mostrar la vista de proyectos activos
+    
+    // Actualizar el valor de la columna 'active' a 0 en lugar de eliminar el proyecto
+    await Project.update({ active: 0 }, { where: { id } });
+    // llamo a la vista projects/activeProjects.ejs con las dos lineas de código siguientes:
     await getActiveProjects(req, res);
-    res.render(path.join(__dirname, '../views/projects/activeProjects.ejs'), {});
+    res.render(path.join(__dirname, "../views/projects/activeProjects.ejs"), {
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
 // Pasar de inactivo a activo un proyecto de la base de datos projects
 export const activateProject = async (req, res) => {
   try {
-    // obtener el id del proyecto a activar
+    // se obtiene el id del proyecto que se quiere activar
     const { id } = req.params;
-
-    // Activar el proyecto
-    await Project.restore({ where: { id} });
-
-    // Mostrar los proyectos activos
-    await getActiveProjects(req, res);
-    res.render(path.join(__dirname, '../views/projects/activeProjects.ejs'), {});
+    
+    // Actualizar el valor de la columna 'active' a 1 
+    await Project.update({ active: 1 }, { where: { id } });
+    // llamo a la vista projects/inactiveProjects.ejs con las dos lineas de código siguientes:
+    await getInactiveProjects(req, res);
+    res.render(path.join(__dirname, "../views/projects/inactiveProjects.ejs"), {
+    });
+    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
 };
 
 // Ver un proyecto de la base de datos projects

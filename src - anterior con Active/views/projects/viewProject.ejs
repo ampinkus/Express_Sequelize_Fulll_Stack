@@ -1,0 +1,45 @@
+<!-- Página para ver un proyecto en particular -->
+<!-- Incluyo el header de Bootstrap -->
+<%- include('../partials/head.ejs') %>
+<!-- Incluyo la barra de navegación -->
+<%- include('../partials/projects/activeNav.ejs') %>
+<div class="container pt-4 pb-2">
+  <div class="view-user p-3">
+    <div class="row mb-3">
+      <div class="col text-center">
+        <h3>Proyecto buscado: <%= project.name %></h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Nombre</th>
+              <th scope="col">Prioridad</th>
+              <th scope="col">Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%= project.name %></td>
+              <td><%= project.priority %></td>
+              <td><%= project.description %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="background-color: white">
+        <div class="row">
+          <b class="mt-3">Comentario:</b>
+          <div class="mb-3"><%= project.comment %></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <a href="/activeProjects" type="button" class="btn btn-primary mt-3">
+        <i class="bi bi-list-task"></i> &nbsp Volver</a>
+    </div>
+  </div>
+</div>
+<%- include('../partials/foot.ejs') %>
